@@ -1,0 +1,16 @@
+{
+  "name": "build-your-own-d3",
+  "version": "0.1.0",
+  "description": "",
+  "main": "mini-d3.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "check:format": "prettier --check .",
+    "test": "echo test"
+  },
+  "author": "oshikiri",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  }
+}

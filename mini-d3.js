@@ -26,7 +26,7 @@ class Selection {
     return this.select(function () {
       const child = document.createElementNS(
         "http://www.w3.org/2000/svg",
-        name
+        name,
       );
       child.__data__ = this.__data__;
       return this.appendChild(child);
@@ -45,7 +45,7 @@ class Selection {
           subnode.__data__ = node.__data__;
         }
         return subnode;
-      })
+      }),
     );
 
     return new Selection(subgroups, this.#parents);
