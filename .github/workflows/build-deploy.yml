@@ -18,6 +18,19 @@ jobs:
         run: |
           npm install
           npm run check:format
+      - name: Setup public/ directory
+        run: |
+          mkdir public
+          cp mini-d3.js ./public/
+          cp -R demo/ ./public/
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "public/"
 
   deploy:
     name: Deploy
@@ -31,17 +44,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Setup public/ directory
-        run: |
-          mkdir public
-          cp mini-d3.js ./public/
-          cp -R demo/ ./public/
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "public/"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
