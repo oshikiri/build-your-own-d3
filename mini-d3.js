@@ -155,58 +155,58 @@ class EnterNode {
 }
 
 function scaleBand() {
-  const f = function (key) {
-    const [l, h] = f._range;
-    const idx = f.domToIdx[key];
+  const scale = function (key) {
+    const [l, h] = scale._range;
+    const idx = scale.domToIdx[key];
     const margin = 6.3829787234042215;
-    return margin + l + (idx * (h - l - margin)) / f._domain.length;
+    return margin + l + (idx * (h - l - margin)) / scale._domain.length;
   };
-  f._range = [];
-  f._domain = [];
-  f.range = function (_range) {
-    f._range = _range;
-    return f;
+  scale._range = [];
+  scale._domain = [];
+  scale.range = function (_range) {
+    this._range = _range;
+    return this;
   };
-  f.domain = function (_domain) {
+  scale.domain = function (_domain) {
     this.domToIdx = {};
     _domain.forEach((x, i) => {
       this.domToIdx[x] = i;
     });
     this._domain = _domain;
-    return f;
+    return this;
   };
-  f.padding = function () {
-    return f;
+  scale.padding = function () {
+    return this;
   };
-  f.bandwidth = function () {
+  scale.bandwidth = function () {
     return 57.4468085106383;
   };
-  f.getTickPoints = function () {
+  scale.getTickPoints = function () {
     return this._domain;
   };
-  return f;
+  return scale;
 }
 
 function scaleLinear() {
-  const f = function (x) {
-    const [xl, xh] = f._domain;
-    const [yl, yh] = f._range;
+  const scale = function (x) {
+    const [xl, xh] = scale._domain;
+    const [yl, yh] = scale._range;
     return yl + ((yh - yl) * (x - xl)) / (xh - xl);
   };
-  f._range = [];
-  f._domain = [];
-  f.range = function (_range) {
+  scale._range = [];
+  scale._domain = [];
+  scale.range = function (_range) {
     this._range = _range;
-    return f;
+    return this;
   };
-  f.domain = function (_domain) {
+  scale.domain = function (_domain) {
     this._domain = _domain;
-    return f;
+    return this;
   };
-  f.getTickPoints = function () {
+  scale.getTickPoints = function () {
     return range(this._domain[0], this._domain[1], 5);
   };
-  return f;
+  return scale;
 }
 
 function range(l, h, stepsize) {
@@ -261,10 +261,10 @@ function axisLeft(scale) {
 
 function axisBottom(scale) {
   return function (axisRoot) {
-    const mainLength = scale._range[1] - scale._range[0];
+    const mainLineLength = scale._range[1] - scale._range[0];
     const valueLine =
       `M${tickLineWidth},${tickLength} ` +
-      `V${tickLineWidth} H${mainLength + tickLineWidth} V${tickLength}`;
+      `V${tickLineWidth} H${mainLineLength + tickLineWidth} V${tickLength}`;
 
     axisRoot
       .attr("fill", "none")
@@ -276,6 +276,7 @@ function axisBottom(scale) {
       .attr("class", "domain")
       .attr("stroke", "currentColor")
       .attr("d", valueLine);
+
     const ticks = axisRoot
       .selectAll(".tick")
       .data(scale.getTickPoints())
