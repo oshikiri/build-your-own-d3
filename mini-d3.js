@@ -296,6 +296,6 @@ function axisBottom(scale) {
       .attr("dy", "0.71em")
       .text((d) => d);
 
-    return axisRoot;
+    return   axisRoot;
   };
 }
