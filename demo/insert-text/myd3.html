@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8" />
+<body>
+  <div id="chart"></div>
+
+  <script>
+    const d3 = {
+      select: function (selector) {
+        const el = document.querySelector(selector);
+        return new Selection(el);
+      },
+    };
+
+    class Selection {
+      element;
+      constructor(element) {
+        this.element = element;
+      }
+      append(name) {
+        const child = document.createElement(name);
+        this.element.append(child);
+        return new Selection(child);
+      }
+      text(content) {
+        const txt = document.createTextNode(content);
+        this.element.append(txt);
+        return this;
+      }
+    }
+  </script>
+
+  <script>
+    d3.select("#chart").append("div").text("hello world");
+  </script>
+</body>
