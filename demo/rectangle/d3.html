@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8" />
+<body>
+  <div id="chart"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+    const svg = d3
+      .select("#chart")
+      .append("svg")
+      .attr("width", 500)
+      .attr("height", 500)
+      .append("g");
+    svg
+      .append("rect")
+      .attr("x", 200)
+      .attr("y", 200)
+      .attr("width", 50)
+      .attr("height", 20)
+      .attr("fill", "blue");
+  </script>
+</body>

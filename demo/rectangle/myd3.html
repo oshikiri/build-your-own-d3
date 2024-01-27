@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8" />
+<body>
+  <div id="chart"></div>
+
+  <script>
+    const d3 = {
+      select: function (selector) {
+        const el = document.querySelector(selector);
+        return new Selection(el);
+      },
+    };
+
+    class Selection {
+      element;
+      constructor(element) {
+        this.element = element;
+      }
+      append(name) {
+        const child =
+          name === "svg"
+            ? document.createElementNS("http://www.w3.org/2000/svg", name)
+            : document.createElement(name);
+        this.element.append(child);
+        return new Selection(child);
+      }
+      text(content) {
+        const txt = document.createTextNode(content);
+        this.element.append(txt);
+        return this;
+      }
+      attr(key, value) {
+        this.element.setAttribute(key, value);
+        return this;
+      }
+    }
+  </script>
+
+  <script>
+    const svg = d3
+      .select("#chart")
+      .append("svg")
+      .attr("width", 500)
+      .attr("height", 500)
+      .append("g");
+    svg
+      .append("rect")
+      .attr("x", 200)
+      .attr("y", 200)
+      .attr("width", 50)
+      .attr("height", 20)
+      .attr("fill", "blue");
+  </script>
+</body>
