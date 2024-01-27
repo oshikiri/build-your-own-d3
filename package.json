@@ -6,11 +6,13 @@
   "scripts": {
     "format": "prettier --write .",
     "check:format": "prettier --check .",
-    "test": "echo test"
+    "test": "jest"
   },
   "author": "oshikiri",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^29.7.0",
+    "jsdom": "^24.0.0",
     "prettier": "^3.1.1"
   }
 }
