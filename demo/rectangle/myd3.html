@@ -17,10 +17,10 @@
         this.element = element;
       }
       append(name) {
-        const child =
-          name === "svg"
-            ? document.createElementNS("http://www.w3.org/2000/svg", name)
-            : document.createElement(name);
+        const child = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          name,
+        );
         this.element.append(child);
         return new Selection(child);
       }

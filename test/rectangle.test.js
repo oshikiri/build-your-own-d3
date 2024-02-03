@@ -9,7 +9,7 @@ test("myd3 inserts blue 50x20 rectangle", () => {
   expect(rect.getAttribute("height")).toBe("20");
 });
 
-test("[bug] myd3 inserts an xhtml rect element", () => {
+test("myd3 inserts an svg rect element", () => {
   const rect = document.querySelector("#chart > svg > g > rect");
-  expect(rect.namespaceURI).toBe("http://www.w3.org/1999/xhtml");
+  expect(rect.namespaceURI).toBe("http://www.w3.org/2000/svg");
 });
