@@ -71,19 +71,19 @@ All code in this document was tested in Chrome v120.
 [d3-selection-last-update-link]: https://github.com/d3/d3-selection/commit/91245ee124ec4dd491e498ecbdc9679d75332b49
 
 
-## 簡単な図形を描画する {#simple-diagrams}
-グラフの描画処理を実装する前に、簡単な図形（文字列、長方形、折れ線など）を描画できるようにしておく。
-これらの図形は、棒グラフや折れ線グラフなどの基本的なグラフを描画する際のパーツとして使われる。
+## Drawing Simple Shapes
+Before implementing the chart drawing process, let's make sure we can draw simple shapes (text, rectangles, lines, etc.).
+These shapes are used as building blocks for basic charts like bar charts and line charts.
 
-### 文字列を描画する {#hello-world-text}
-まずはじめに、`hello world` という文字列を画面上に描画するだけの処理を実装してみる。
+### Drawing Text
+First, let's implement a process that simply draws the string `hello world` on the screen.
 
-この処理をD3で実装しようとすると以下のようなコードになる。
-これ以降、オリジナルのD3の `https://d3js.org/d3.v7.min.js` を使ってグラフを描画するコードを「本家D3」と呼ぶことにする。
+If you try to implement this in D3, the code looks like the following.
+From here on, I will refer to code that draws charts using the original D3's `https://d3js.org/d3.v7.min.js` as the "official D3" version.
 
-あとのためにコメントで一行ずつ説明しておく。
+I'll add line-by-line comments for explanation.
 
-{% with_caption(title="demo/insert-text/d3.html (本家D3)") %}
+**demo/insert-text/d3.html (official D3):**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -93,24 +93,23 @@ All code in this document was tested in Chrome v120.
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
-    d3.select("#chart")     // body 内にある id=chart の要素を探す
-      .append("div")        // それに div 要素を追加する
-      .text("hello world"); // さらにその div 要素に "hello world" という文字列を追加する
+    d3.select("#chart")     // Find the element with id=chart in the body
+      .append("div")        // Add a div element to it
+      .text("hello world"); // Add the string "hello world" to the div element
   </script>
 </body>
 ```
-{% end %}
 
-最後の `<script>` 内にあるJSが実行されると、`#chart` というIDがついている div 要素が更新され、次の図のように `chart` 内に `<div>hello world</div>` が追加される。
+When the last `<script>` is executed, the div element with the ID `#chart` is updated, and `<div>hello world</div>` is added inside `chart` as shown in the following figure.
 
-![hello-world (本家D3) の実行結果](.readme/hello-world-d3.png)
+![Result of hello-world (official D3)](.readme/hello-world-d3.png)
 
-このサンプルで使われている `d3` を再実装してみる。
+Let's try reimplementing the `d3` used in this sample.
 
-まずコメントに書かれている内容を読んでみると、そのままJavaScriptで実装できそうだということに気づく。
-試しに書いてみる。
+First, if you read the contents written in the comments, you'll notice that it can be implemented directly in JavaScript.
+Let's try writing it.
 
-{% with_caption(title="demo/insert-text/vanilla-js.html (Web APIを使うバージョン)") %}
+**demo/insert-text/vanilla-js.html (Web API version):**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -126,23 +125,22 @@ All code in this document was tested in Chrome v120.
   </script>
 </body>
 ```
-{% end %}
 
-上記のコードをHTMLファイルとして保存してブラウザで開くと、本家D3バージョンと同じ挙動になっていることを確認できる。
 
-![hello-world (Web APIを使うバージョン) の実行結果](.readme/hello-world-vanillajs.png)
+If you save the above code as an HTML file and open it in your browser, you will see that it behaves the same as the official D3 version.
 
-さて、この記事の目的は「D3と同じインターフェースで同じような挙動をするライブラリを実装する」ということだった。
-そこで次にインターフェースを合わせてみる。
+![Result of hello-world (Web API version)](.readme/hello-world-vanillajs.png)
 
-本家D3バージョンのグラフ描画処理のコードを再度眺めてみると、
-`d3.select("#chart").append("div").text("hello world");` という、D3に特徴的なメソッドチェインを基本としたインターフェースになっていることがわかる。
-また `d3.select` の返り値は [@types/d3-selection によれば Selection らしい][types-d3-selection]。
-以上の情報をもとに、ひとまず次のように Selection クラスを追加してみる[^original-d3-select]。
+The goal of this document is to implement a library that behaves like D3, using the same interface.
+So, let's align the interface next.
+
+Looking again at the official D3 version's chart drawing code, you can see that `d3.select("#chart").append("div").text("hello world");` uses D3's characteristic method-chaining interface.
+Also, according to [@types/d3-selection][types-d3-selection], the return value of `d3.select` is a `Selection`.
+Based on this information, let's add a `Selection` class as shown below[^original-d3-select].
 
 [types-d3-selection]: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/61748a217350dddbef9842803adf8533a8b1e8b9/types/d3-selection/index.d.ts#L107-L121
 
-{% with_caption(title="demo/insert-text/myd3.html (自作バージョン)") %}
+**demo/insert-text/myd3.html (mini-d3 version):**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -180,17 +178,17 @@ All code in this document was tested in Chrome v120.
   </script>
 </body>
 ```
-{% end %}
 
 - [code](https://github.com/oshikiri/build-your-own-d3/blob/main/demo/insert-text/myd3.html)
 - [demo](https://www.oshikiri.org/build-your-own-d3/demo/insert-text/myd3.html)
 
-これをHTMLとして保存しブラウザで開くと、本家D3バージョンと同じ挙動になっているのを確認できる。
 
-これ以降では、この実装を徐々に拡張して描ける図形やグラフを増やしていく。
+If you save this as HTML and open it in your browser, you will see it behaves the same as the official D3 version.
 
-[^original-d3-select]: ちなみに `d3.select` の[実際の実装](https://github.com/d3/d3-selection/blob/v3.0.0/src/select.js) も自作バージョンと同様に [`Selection`](https://github.com/d3/d3-selection/blob/v3.0.0/src/selection/index.js) を生成して返すだけの関数になっている。
+From here, we will gradually extend this implementation to support more shapes and charts.
 
+
+[^original-d3-select]: The [actual implementation of `d3.select`](https://github.com/d3/d3-selection/blob/v3.0.0/src/select.js) also just returns a [`Selection`](https://github.com/d3/d3-selection/blob/v3.0.0/src/selection/index.js), just like our mini-d3 version.
 
 ### 長方形を描画する {#svg-rect}
 
