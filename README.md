@@ -190,11 +190,11 @@ From here, we will gradually extend this implementation to support more shapes a
 
 [^original-d3-select]: The [actual implementation of `d3.select`](https://github.com/d3/d3-selection/blob/v3.0.0/src/select.js) also just returns a [`Selection`](https://github.com/d3/d3-selection/blob/v3.0.0/src/selection/index.js), just like our mini-d3 version.
 
-### 長方形を描画する {#svg-rect}
+### Drawing Rectangles
 
-本家D3で長方形を書くコードは以下の通りである。
+Here is the code to draw a rectangle using official D3.
 
-{% with_caption(title="demo/rectangle/d3.html") %}
+**demo/rectangle/d3.html:**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -221,9 +221,8 @@ From here, we will gradually extend this implementation to support more shapes a
 </body>
 
 ```
-{% end %}
 
-これを実行すると、`#chart` に以下のようなSVG要素が追加される。
+When you run this, it adds the SVG element to `#chart` as follows:
 
 ```html
 <div id="chart">
@@ -235,10 +234,13 @@ From here, we will gradually extend this implementation to support more shapes a
 </div>
 ```
 
-一応解説しておくと、500x500のSVG要素を作成してその中に `g` 要素を作成、さらにその中に (200, 200) の位置に 50x20 の青で塗りつぶされた長方形を描画している。
+To explain:
+1. this creates an `svg` element of 500x500,
+2. creates a `g` element inside it,
+3. and finally draws a blue `rect` at position (200, 200) with size 50x20 inside the `g`.
 
-ここでは新しく `attr` というメソッドを使っているため、これを実装する必要がある。
-Selection クラスに以下のような `attr` を追加してみる。
+Here, we use a new method called `attr`, so we need to implement it.
+Let's add an `attr` method to the `Selection` class as follows:
 
 ```js
 attr(key, value) {
@@ -247,50 +249,50 @@ attr(key, value) {
 }
 ```
 
-しかし、`attr` を追加しても、なぜか長方形は表示されない。
 
-![長方形は表示されない](.readme/rect-did-not-appear.png)
+However, even after adding `attr`, the rectangle does not appear for some reason.
 
-これはSVGを扱うときのハマりポイントなのだが、いったん理由は置いておくとして、
+![Rectangle does not appear](.readme/rect-did-not-appear.png)
+
+This is a common pitfall when working with SVG. For now, let's set aside the reason and simply change the code from the "Before" to the "After" version to resolve the error.
 
 ```js
+// Before
 const child = document.createElement(name);
 ```
 
-としていたところを
-
 ```js
+// After
 const child = document.createElementNS(
   "http://www.w3.org/2000/svg",
   name,
 );
 ```
 
-にすれば解決する。
-実際、この変更を加えてみると、期待通り下図のように長方形が表示される。
+After making this change, the rectangle appears as expected, as shown below.
 
-![長方形が表示された](.readme/rect-appeared.png)
+![Rectangle appears](.readme/rect-appeared.png)
 
-なぜ `createElement` ではなく `createElementNS` を使う必要があるか？
-ここで作りたいのはSVG名前空間に属する `<svg>` なのだが、`document.createElement("svg")` だと HTML名前空間の `svg` 要素を作ってしまう[^createelement]からだ。
-そのため、SVGの名前空間に属する `<svg>` を作りたい場合は、`createElementNS` の第一引数で明示的に名前空間を指定する必要がある。
+Why do we need to use `createElementNS` instead of `createElement`?
+What we want to create here is an `<svg>` element in the SVG namespace, but `document.createElement("svg")` creates an `svg` element in the HTML namespace[^createelement].
+Therefore, to create an `<svg>` element in the SVG namespace, you need to explicitly specify the namespace as the first argument to `createElementNS`.
 
-- [svg - SVG: スケーラブルベクターグラフィック | MDN](https://developer.mozilla.org/ja/docs/Web/SVG/Element/svg)
-- [名前空間の速修講座 - SVG: スケーラブルベクターグラフィック | MDN](https://developer.mozilla.org/ja/docs/Web/SVG/Namespaces_Crash_Course)
+- [svg - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg)
+- [Namespaces crash course - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course)
 - [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
 
-[実際の append][d3-selection-append] の実装では `append("svg")` の場合に名前空間として `http://www.w3.org/2000/svg` を使い、そうでない場合も親要素の名前空間を引き継ぐ実装になっている。
-ちなみに、D3では[SVG以外の名前空間もサポートしている]。
+In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
+By the way, D3 also [supports namespaces other than SVG][d3-selection-namespaces].
 
-[^createelement]: Document.createElementのドキュメントを注意深く読んでみると、たしかに「[HTML 文書において、 document.createElement() メソッドは tagName で指定された HTML 要素を生成し][mdn-createElement]」と明記されている。
+[^createelement]: I realized that [the MDN documentation][mdn-createElement] for `Document.createElement` clearly states: "In an HTML document, the `document.createElement()` method creates the HTML element specified by `localName` ..."
 
 [d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
-[SVG以外の名前空間もサポートしている]: https://d3js.org/d3-selection/namespaces
-[mdn-createElement]: https://developer.mozilla.org/ja/docs/Web/API/Document/createElement
+[d3-selection-namespaces]: https://d3js.org/d3-selection/namespaces
+[mdn-createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 
-一応ソースコード全体をまとめておく。
+For reference, here is the complete source code.
 
-{% with_caption(title="demo/rectangle/myd3.html") %}
+**demo/rectangle/myd3.html:**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -347,7 +349,6 @@ const child = document.createElementNS(
   </script>
 </body>
 ```
-{% end %}
 
 - [code](https://github.com/oshikiri/build-your-own-d3/blob/main/demo/rectangle/myd3.html)
 - [demo](https://www.oshikiri.org/build-your-own-d3/demo/rectangle/myd3.html)
