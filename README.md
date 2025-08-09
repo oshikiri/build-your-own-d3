@@ -8,7 +8,7 @@
 
 To use D3 effectively while understanding its internal workings, it's important to grasp these aspects in advance.
 
-To help with this, I created a script, [mini-d3.js] ([bar chart demo]), that can draw simple charts using a D3-like API.
+To help with this, I created a script called [mini-d3.js] ([bar chart demo]) that can draw simple charts using a D3-like API.
 
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
 [bar chart demo]: https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html
@@ -16,10 +16,10 @@ To help with this, I created a script, [mini-d3.js] ([bar chart demo]), that can
 
 ## Introduction
 
-When I tried to create more complex visualizations, I explored how to use [D3] (D3.js), but found it difficult to grasp[^d3-is-difficult].
+When I first tried to create more complex visualizations with [D3] (D3.js), I found it difficult to grasp[^d3-is-difficult].
 This document explains how D3 works by reimplementing its core features from scratch, so we can draw the same kinds of graphs using a similar interface[^build-your-own-x].
-The goal is to make it possible to swap `<script src="https://d3js.org/d3.v7.min.js"></script>` with your own `<script src="./mini-d3.js"></script>` in D3 sample code, and have it work the same way.
-Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the main sample code working to some extent.
+The goal is to make it possible to replace `<script src="https://d3js.org/d3.v7.min.js"></script>` with your own `<script src="./mini-d3.js"></script>` in D3 sample code, and have it work the same way.
+Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the main sample code working.
 
 
 [^d3-is-difficult]: For reference, it seems this is a common sentiment: [The Trouble with D3][trouble-with-d3], [Is it just me, or is D3.js too hard?][d3-too-hard], [Could The Developer Experience For D3.js Be Improved][d3-dev-exp]
@@ -78,8 +78,8 @@ These shapes are used as building blocks for basic charts like bar charts and li
 ### Drawing Text
 First, let's implement a process that simply draws the string `hello world` on the screen.
 
-If you try to implement this in D3, the code looks like the following.
-From here on, I will refer to code that draws charts using the original D3's `https://d3js.org/d3.v7.min.js` as the "official D3" version.
+If you try to implement this in D3, the code would look like this.
+From here on, I will refer to code that draws charts using the official D3's `https://d3js.org/d3.v7.min.js` as the "official D3" version.
 
 I'll add line-by-line comments for explanation.
 
@@ -127,12 +127,12 @@ Let's try writing it.
 ```
 
 
-If you save the above code as an HTML file and open it in your browser, you will see that it behaves the same as the official D3 version.
+If you save the above code as an HTML file and open it in your browser, you will see that it behaves the same way as the official D3 version.
 
 ![Result of hello-world (Web API version)](.readme/hello-world-vanillajs.png)
 
 The goal of this document is to implement a library that behaves like D3, using the same interface.
-So, let's align the interface next.
+So, let's match the interface next.
 
 Looking again at the official D3 version's chart drawing code, you can see that `d3.select("#chart").append("div").text("hello world");` uses D3's characteristic method-chaining interface.
 Also, according to [@types/d3-selection][types-d3-selection], the return value of `d3.select` is a `Selection`.
@@ -234,12 +234,12 @@ When you run this, it adds the SVG element to `#chart` as follows:
 </div>
 ```
 
-To explain:
-1. this creates an `svg` element of 500x500,
-2. creates a `g` element inside it,
-3. and finally draws a blue `rect` at position (200, 200) with size 50x20 inside the `g`.
+Here's what this code does:
+1. Creates a 500x500 `svg` element.
+2. Appends a `g` element inside it.
+3. Draws a 50x20 blue `rect` at position (200, 200) within the `g` element.
 
-Here, we use a new method called `attr`, so we need to implement it.
+Here, we use a new method called `attr`, so we need to implement it as well.
 Let's add an `attr` method to the `Selection` class as follows:
 
 ```js
@@ -250,7 +250,7 @@ attr(key, value) {
 ```
 
 
-However, even after adding `attr`, the rectangle does not appear for some reason.
+However, even after adding the `attr` method, the rectangle still does not appear.
 
 ![Rectangle does not appear](.readme/rect-did-not-appear.png)
 
@@ -269,7 +269,7 @@ const child = document.createElementNS(
 );
 ```
 
-After making this change, the rectangle appears as expected, as shown below.
+After making this change, the rectangle appears as expected, as shown in the following image:
 
 ![Rectangle appears](.readme/rect-appeared.png)
 
