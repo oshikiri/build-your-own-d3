@@ -13,51 +13,46 @@ To help with this, I created a script, [mini-d3.js] ([bar chart demo]), that can
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
 [bar chart demo]: https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html
 
-## 残りTODO
-完成まで時間がかかりそうだったので、この記事は書いている途中で公開している。
-残りのTODOを今思いつく範囲で書いておく。
 
-- build-your-own-d3 リポジトリに上がっていないサンプルコードがある
-- d3-selection が難しいと言っているわりに Selection の説明を書く前に力尽きている
-- build-your-own-d3 にテストを追加する
-- その他細かい校正
-- original article: <https://www.oshikiri.org/posts/build-your-own-d3/>
+## Introduction
 
-## はじめに {#introduction}
-### この記事の背景 {#background}
-
-少し複雑な可視化をしようと思って
-[D3](https://github.com/d3/d3)（D3.js）の使い方を調べたが、難しくていまいち理解できなかった[^d3-is-difficult]。
-そこでこの記事では、D3の挙動を理解することを目的として、D3と同じインターフェースで同じグラフを描画できるようなスクリプトを作ってみる[^build-your-own-x]。
-イメージとしては、D3のサンプルコードのうち、 `<script src="https://d3js.org/d3.v7.min.js"></script>` の部分を自作スクリプト `<script src="./mini-d3.js"></script>` に差し替えても動くようにする。
-もちろん、D3の機能すべてを再実装するのは現実的ではないので「主なサンプルコードをある程度動かすことができる」くらいの目標にしておく。
+When I tried to create more complex visualizations, I explored how to use [D3] (D3.js), but found it difficult to grasp[^d3-is-difficult].
+This document explains how D3 works by reimplementing its core features from scratch, so we can draw the same kinds of graphs using a similar interface[^build-your-own-x].
+The goal is to make it possible to swap `<script src="https://d3js.org/d3.v7.min.js"></script>` with your own `<script src="./mini-d3.js"></script>` in D3 sample code, and have it work the same way.
+Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the main sample code working to some extent.
 
 
-[^d3-is-difficult]: 念のため調べてみたが、よく言われているらしい: [The Trouble with D3](https://medium.com/dailyjs/the-trouble-with-d3-4a84f7de011f)、[Is it just me, or is D3.js too hard?](https://www.quora.com/Is-it-just-me-or-is-D3-js-too-hard)、[Could The Developer Experience For D3.js Be Improved](https://javascript.plainenglish.io/how-the-developer-experience-for-d3-js-could-be-improved-31b372ab3119)
+[^d3-is-difficult]: For reference, it seems this is a common sentiment: [The Trouble with D3][trouble-with-d3], [Is it just me, or is D3.js too hard?][d3-too-hard], [Could The Developer Experience For D3.js Be Improved][d3-dev-exp]
+[^build-your-own-x]: Some say that the best way to understand the internals of popular tools or packages is to reimplement them yourself. Articles that do this have become a whole genre, known as [build-your-own-x].
 
-[^build-your-own-x]: 有名なツールやパッケージの中身を理解するためにはそれを再実装すればいい、と一部では言われていて、これを実践する記事は [build-your-own-x](https://github.com/codecrafters-io/build-your-own-x) という一大ジャンル？になっている。
+[D3]: https://github.com/d3/d3
+[trouble-with-d3]: https://medium.com/dailyjs/the-trouble-with-d3-4a84f7de011f
+[d3-too-hard]: https://www.quora.com/Is-it-just-me-or-is-D3-js-too-hard
+[d3-dev-exp]: https://javascript.plainenglish.io/how-the-developer-experience-for-d3-js-could-be-improved-31b372ab3119
+[build-your-own-x]: https://github.com/codecrafters-io/build-your-own-x
 
 
-### この記事の扱っている範囲
-この記事を書き始めてから気づいたが、D3の記事をゼロから書くといつまで経っても書き終わらないので、取り扱う項目を絞っておく必要がある。
-この記事で扱うこと/扱わないことを以下のように決めておく。
+### Scope of This Document
+After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
+So, I decided to narrow down the topics.
+Here is what this article will and will not cover:
 
-**この記事で扱うこと:**
-- D3の基本的なAPIの挙動・実装方法
-- D3っぽい挙動をするライブラリの作り方
-- 私がD3を解読していたときのメモ
+**This document covers:**
+- The behavior and implementation of D3's basic APIs
+- How to create a library that behaves like D3
 
-**この記事で扱わないこと:**
-- D3の使い方[^d3-introduction]
-- D3のデータハンドリング（d3-array など）
-- d3-geoなどの発展的な可視化
-- JavaScript（特にDOM操作周り）、CSS、SVGなどに関する知識
+**This document does not cover:**
+- How to use D3 [^d3-introduction]
+- D3's data handling (such as d3-array)
+- Advanced visualizations like d3-geo
+- Knowledge of JavaScript (especially DOM manipulation), CSS, or SVG
 
-こう書いてみると、想定読者はいったい誰なんだろう？という疑問が浮かんでくる。
-この文はこの記事をほぼ書き終えたときに書いているが、まだよくわかっていない。
-まあいいや。
+Writing this, I wonder who the intended audience really is.
+I wrote this section after nearly finishing the document, but I still don't know.
 
-[^d3-introduction]: ここが怪しい場合は、[D3 Tips and Tricks v7.x by Malcolm Maclean](https://leanpub.com/d3-t-and-t-v7) あたりを読んでからこの記事を読むのが良いと思う
+[^d3-introduction]: If you're unsure about D3 basics, I recommend reading [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] before this document.
+
+[d3-tips]: https://leanpub.com/d3-t-and-t-v7
 
 
 ### 実行環境
