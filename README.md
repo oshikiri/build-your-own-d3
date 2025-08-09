@@ -35,7 +35,7 @@ Of course, it's not realistic to reimplement all of D3's features, so the aim is
 ### Scope of This Document
 After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
 So, I decided to narrow down the topics.
-Here is what this article will and will not cover:
+Here is what this document will and will not cover:
 
 **This document covers:**
 - The behavior and implementation of D3's basic APIs
@@ -55,20 +55,20 @@ I wrote this section after nearly finishing the document, but I still don't know
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
 
 
-### 実行環境
+### Environment
 
-D3のバージョンについては、現在の最新版 ([v7.8.5](https://github.com/d3/d3/blob/v7.8.5)) をもとに記事を書く。
-ただし、この記事では基本的な機能しか扱わないので、数年経ったくらいではそう影響を受けないと思われる。
-まあ[2018年のアップデート](https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50)で基本的なAPIの挙動が大きく変わったという例はあるが、ここ数年はD3もあまり更新されていないようだし[^d3-selection-last-update]多分大丈夫でしょう。
 
-また、このページにあるコードの動作確認はChrome v120で行った。
+This document is based on D3 ([v7.8.5][d3-v7.8.5]), the latest version at the time of writing.
+Since this document only covers basic features, differences in recent versions should have little effect.
+The last major change to the basic API was in the [2018 update][d3-2018-update], and D3 has been stable since then [^d3-selection-last-update].
 
-[^d3-selection-last-update]: ちなみに後で出てくる d3-selection は2023-09-30時点では[最終更新が2年前](https://github.com/d3/d3-selection/commit/91245ee124ec4dd491e498ecbdc9679d75332b49)だった。
+All code in this document was tested in Chrome v120.
 
-### この記事について
+[^d3-selection-last-update]: As of September 30, 2023, d3-selection (which appears later) was [last updated two years ago][d3-selection-last-update-link].
 
-この記事自体は[GitHubにあるmarkdown](https://github.com/oshikiri/oshikiri.github.io/blob/master/content/posts/build-your-own-d3.md)から生成されている。
-また、最終的な実装は [build-your-own-d3](https://github.com/oshikiri/build-your-own-d3) リポジトリに入っている。
+[d3-v7.8.5]: https://github.com/d3/d3/blob/v7.8.5
+[d3-2018-update]: https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50
+[d3-selection-last-update-link]: https://github.com/d3/d3-selection/commit/91245ee124ec4dd491e498ecbdc9679d75332b49
 
 
 ## 簡単な図形を描画する {#simple-diagrams}
