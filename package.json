@@ -11,8 +11,8 @@
   "author": "oshikiri",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^29.7.0",
-    "jsdom": "^24.0.0",
-    "prettier": "^3.1.1"
+    "jest": "^30.0.5",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.2"
   }
 }
