@@ -354,11 +354,11 @@ For reference, here is the complete source code.
 - [demo](https://www.oshikiri.org/build-your-own-d3/demo/rectangle/myd3.html)
 
 
-### 折れ線を描画する {#svg-path}
+### Drawing a Path
 
-![SVGのパスで描画したうずまき](.readme/svg-path.png)
+![Lines drawn with SVG path](.readme/svg-path.png)
 
-{% with_caption(title="examples/svg-path/d3.html") %}
+**examples/svg-path/d3.html:**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -386,18 +386,17 @@ For reference, here is the complete source code.
   </script>
 </body>
 ```
-{% end %}
 
-実はパスを追加する処理については、これまでの実装のままで動く。
-SVG のパス `<path>` については、参考になるリンクだけ貼っておく。
+In fact, the current implementation can add a path.
+For more information about SVG `<path>`, here are some useful links:
 
-- [`<path>` - SVG: スケーラブルベクターグラフィック | MDN](https://developer.mozilla.org/ja/docs/Web/SVG/Element/path)
-- [パス - SVG: スケーラブルベクターグラフィック | MDN](https://developer.mozilla.org/ja/docs/Web/SVG/Tutorial/Paths)
+- [`<path>` - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path)
+- [Paths - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths)
 
 
-### 外部のJSONからデータを読み込む {#load-json}
+### Loading Data from External JSON
 
-{% with_caption(title="examples/load-json/data.json") %}
+**examples/load-json/data.json:**
 ```json
 [
   { "x": 0, "y": 0, "width": 50, "height": 50 },
@@ -405,15 +404,14 @@ SVG のパス `<path>` については、参考になるリンクだけ貼って
   { "x": 0, "y": 200, "width": 100, "height": 50 }
 ]
 ```
-{% end %}
 
-`d3.json` を使って上記のようなJSONファイルをロードし、それをもとに下図のように複数の長方形を描画してみる。
+Using `d3.json`, load the above JSON file and draw multiple rectangles as shown in the figure below.
 
-![JSONの中身をもとに長方形を描画する](.readme/load-json.png)
+![Drawing rectangles based on JSON data](.readme/load-json.png)
 
-D3バージョンは以下の通り。
+Here is the official D3 version code:
 
-{% with_caption(title="examples/load-json/d3.html") %}
+**examples/load-json/d3.html:**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -443,17 +441,15 @@ D3バージョンは以下の通り。
   </script>
 </body>
 ```
-{% end %}
 
-D3の例を見たことがあると、`data` や `enter` を使っていない上記のコードは違和感があるかもしれない[^d3-without-selection]。
-こういう書き方になっているのは、`data` や `enter` はややこしくてすぐに実装できないためである。
+If you are familiar with D3 examples, you might find the absence of `data` and `enter` in the above code strange[^d3-without-selection].
+The reason for this coding style is that `data` and `enter` are somewhat complicated and couldn't be implemented right away.
 
-[^d3-without-selection]: ただし、d3-selection のAPIに慣れるまでは、（邪道ではあるものの）こういう書き方を使い続けるのもひょっとするとアリなんじゃないかな〜とは思っている。
-でも慣れたら d3-selection のAPIを使ったほうが便利ではある。
+[^d3-without-selection]: However, until you get used to the d3-selection API, it might not be a bad idea to continue using this kind of coding style (even though it's not the standard way). But once you're familiar with it, using the d3-selection API is more convenient.
 
-`d3.json` は単に Promise を返しているだけなので、以下のように実装しておけば良い。
+The `d3.json` function simply returns a `Promise`, so the following implementation is sufficient.
 
-{% with_caption(title="examples/load-json/myd3.html の d3 定義の部分") %}
+**examples/load-json/myd3.html の d3 定義の部分:**
 ```js
 const d3 = {
   select: function (selector) {
@@ -467,19 +463,17 @@ const d3 = {
   },
 };
 ```
-{% end %}
 
-ちなみに実際の[d3-fetchのソースコード][d3-fetch-json]もほぼ同じような実装になっている。
+Interestingly, the actual [d3-fetch source code][d3-fetch-json] is almost the same as this implementation.
 
 [d3-fetch-json]: https://github.com/d3/d3-fetch/blob/v3.0.1/src/json.js
 
 
-## パッケージとして整理する？ {#setup-package}
-コード量が増えてきたので今のうちにパッケージの形に整えておきたい。
-しかし、ステップバイステップで説明を進める都合上、パッケージの形にまとめると、build-your-own-d3 リポジトリ内に大量の package.json を作る必要があり面倒になる。
-そのためこの記事では、多少無理をしつつ、以下のように単一のJSファイルにすべて実装を詰め込む形で話を進める。
+### Organizing as a Package
+As the codebase grows, it would be ideal to organize it as a package.
+However, for the sake of step-by-step explanation, this document keeps all implementations in a single JS file.
 
-{% with_caption(title="examples/setup-package/myd3.html") %}
+**examples/setup-package/myd3.html:**
 ```js
 <!doctype html>
 <meta charset="utf-8" />
@@ -509,9 +503,8 @@ const d3 = {
   </script>
 </body>
 ```
-{% end %}
 
-{% with_caption(title="examples/setup-package/myd3.js") %}
+**examples/setup-package/myd3.js:**
 ```js
 const d3 = {
   select: function (selector) {
@@ -548,45 +541,41 @@ class Selection {
   }
 }
 ```
-{% end %}
 
-もしパッケージとして整備したい場合は、実際のD3の構成が参考になる。
-[実際のD3の構成][d3-structure]を見てみると、おおまかな機能ごとにリポジトリが別れていて、 d3/d3リポジトリですべてを読み込む形になっている[^d3-adopt-a-monorepo]。
+If you want to organize it as a package, the actual structure of D3 can be a reference.
+Looking at [the actual structure of D3][d3-structure], it seems that the repositories are divided roughly by functionality, and the d3/d3 repository is used to load all d3-* packages[^d3-adopt-a-monorepo]。
 
 [d3-structure]: https://github.com/d3/d3/blob/v7.8.5/src/index.js
 
-私も最初に TypeScript で自作D3を実装したときは、本家D3と同様にディレクトリに分けた上で、一番上の index.ts で `export * from "./selection";` のように export する形にした。
-
-[^d3-adopt-a-monorepo]: ただしこれについては今後変わる可能性がある:
+[^d3-adopt-a-monorepo]: However, this may change in the future:
   [Adopt a monorepo · Issue #3791 · d3/d3](https://github.com/d3/d3/issues/3791)
 
 
-## 棒グラフを描画する {#bar-chart}
+## Drawing Bar Charts
 
-このセクションでは、最終的に以下のような棒グラフ ([デモページ][bar-chart-demo]) が描けるようになることを目標にして実装を進めていく。
+In this section, the goal is to be able to draw bar charts like the one below ([Demo page][bar-chart-demo]).
 
-![自作バージョンのD3で描画した棒グラフ](.readme/bar-chart.png)
+![Bar chart drawn with mini D3](.readme/bar-chart.png)
 
-グラフは「D3 Tips and Tricks v7.x」で使われていたもので、元データは[こちらのJSON][sales-json]にアップロード済み。
+The chart is the one used in "D3 Tips and Tricks v7.x", and the original data is already uploaded to [this JSON][sales-json].
 
 [bar-chart-demo]: https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html
 [sales-json]: https://github.com/oshikiri/build-your-own-d3/blob/main/demo/data/sales.json
 
-これ以降はかなり込み入った実装になるため、本家D3の実装で必要なものだけを抜き出す形で実装を進める。
-特にこのセクションでは、 [d3-selection] の実装を参考に実装を進めていく。
+From here, the implementation becomes quite complicated, so we will proceed by extracting only the necessary parts from the official D3 implementation.
+In particular, in this section, we will refer to the implementation of [d3-selection].
 
 [d3-selection]: https://github.com/d3/d3-selection
 
+### Drawing the Bars of the Bar Chart
 
-### 棒グラフの棒を描画する {#bar-chart-bars}
+Ignoring the scaling process and ticks for now, let's first draw just the bars of the bar chart as shown in the figure below.
 
-スケーリングの処理や目盛りなどは一旦無視して、下図のように棒グラフの棒の部分だけをまず描いてみる。
+![Bar chart drawn with self-made D3 (without scaling, height is the value of sales)](.readme/bars-without-scaling.png)
 
-![自作D3で描画した棒グラフ（スケーリングなし、heightがsalesの値になっている）](.readme/bars-without-scaling.png)
+First, let's create the code to draw this using the official D3.
 
-まずは本家D3を使ってこれを描画するコードを作る。
-
-{% with_caption(title="examples/bar-chart/bars/myd3.html") %}
+**examples/bar-chart/bars/myd3.html:**
 ```html
 <!doctype html>
 <meta charset="utf-8" />
@@ -647,12 +636,11 @@ class Selection {
   </script>
 </body>
 ```
-{% end %}
 
-自作D3でもこのサンプルコードが動くようにするためには、`d3.selectAll` `Selection.data` `Selection.enter` を実装し、さらに `Selection.attr` がバインドしたデータを使えるようにする必要がある。
-本家 d3-selection の実装をもとに以下のように実装を追加してみる。
+To make this sample code work with my D3, I need to implement `d3.selectAll`, `Selection.data`, and `Selection.enter`, and also make `Selection.attr` able to use the bound data.
+Based on the implementation of d3-selection, let's add the following implementations.
 
-{% with_caption(title="examples/bar-chart/bars/myd3.js") %}
+**examples/bar-chart/bars/myd3.js:**
 ```js
 const d3 = {
   select: function (selector) {
@@ -816,13 +804,12 @@ function axisBottom() {
   return function () {};
 }
 ```
-{% end %}
 
 
-### スケーリングの処理を実装する {#bar-chart-scale}
+### Implementing the Scaling Process
 
-ここでは、D3のコードで先ほど省略していた `d3.scaleBand` などのスケーリングの処理を実装する。
-D3を使ってグラフを描画するコードは以下のとおり。
+Here, we implement the scaling processes such as `d3.scaleBand` that were omitted in the previous code.
+The code to draw the bar chart is as follows:
 
 ```html
 <!doctype html>
@@ -897,10 +884,10 @@ D3を使ってグラフを描画するコードは以下のとおり。
 </body>
 ```
 
-この描画処理を実行できるようにするために、自作D3のほうに追加で `scaleBand` と `scaleLinear` を実装する必要がある。
-長くなるのでここでは `scaleLinear` のみ載せておく。
+To make this work with my D3, I need to additionally implement `scaleBand` and `scaleLinear`.
+Since it's getting long, I'll only include the implementation of `scaleLinear` here.
 
-{% with_caption(title="mini-d3.js から抜粋した scaleLinear の実装") %}
+**mini-d3.js から抜粋した scaleLinear の実装:**
 ```js
 function scaleLinear() {
   const scale = function (x) {
@@ -932,21 +919,20 @@ function range(l, h, stepsize) {
   return values;
 }
 ```
-{% end %}
 
-この実装を自作D3に追加したあと、HTMLをブラウザで開くと以下のようなグラフが表示される。
+After adding this implementation to my D3 and opening the HTML in a browser, the following graph is displayed.
 
-![自作D3で描画した棒グラフ（スケーリングあり）](.readme/bars-with-scaling.png)
+![Bar chart drawn with self-made D3 (with scaling)](.readme/bars-with-scaling.png)
 
 
-### 軸と目盛りを描画する {#bar-chart-axis}
+### Drawing Axes and Ticks
 
-棒グラフの棒の部分は描画できたので、残りの軸と目盛りを描画する関数 `axisLeft` `axisBottom` を実装する。
+Now that the bars of the bar chart can be drawn, let's implement the functions to draw the axes and ticks, `axisLeft` and `axisBottom`.
 
-ざっくり言ってしまうと軸の線を引いて適切な位置にテキストを配置するだけだが、雑に実装してもわりと長くなる。
-そのため、ここでは `axisLeft` のみを載せておく。
+Roughly speaking, it just draws the axis line and places the text at the appropriate positions, but even a rough implementation can be relatively long.
+Therefore, I'll only include the implementation of `axisLeft` here.
 
-{% with_caption(title="mini-d3.js から抜粋した axisLeft の実装") %}
+**mini-d3.js から抜粋した axisLeft の実装:**
 ```js
 const tickLength = 6;
 const tickLineWidth = 0.5;
@@ -990,78 +976,64 @@ function axisLeft(scale) {
   };
 }
 ```
-{% end %}
 
-最終的なコードとデモページはこちら:
+Here is the final code and demo page:
 
 - [mini-d3.js](https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js)
 - [demo/bar_chart.html](https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html)
 
-マジックナンバーが何箇所か出現していることからもわかるとおり、かなり限定的な実装にはなっているものの、たった約300行で棒グラフが描画できた。
+Although there are several magic numbers and many missing features, it is still possible to draw a bar chart with just about 300 lines.
 
+## Drawing Line Charts
 
-## 折れ線グラフを描画する {#line-chart}
+I also want to be able to draw other graphs covered in [D3 Tips and Tricks v7.x][d3-tips].
+For example, by additionally implementing `d3.timeParse` and `d3.scaleTime`, you can draw line charts like the one below.
 
-[D3 Tips and Tricks v7.x][d3-tips] で扱われている他のグラフも描画できるようにしたい。
-詳細は省略するが、例えば `d3.timeParse` や `d3.scaleTime` などを追加で実装すると、以下のような折れ線グラフが書けるようになる。
+![Line chart drawn with self-made D3](.readme/line-chart.png)
 
-![自作バージョンのD3で描画した折れ線グラフ](.readme/line-chart.png)
+As you can guess from the implementation of "Drawing Axes and Ticks", the code becomes considerably longer and more complicated from here.
+I will leave it as a challenge for the reader to understand, as it would be faster to read the original D3 source code.
 
-「軸と目盛りを描画する」の実装を見ると想像がつくと思うが、これ以降は込み入ってくるので必要なコード量がかなり増えてくる。
-ここまで理解できればもう本家D3のソースコードを読んだほうが理解が早いと思うので、これ以降は読者の課題ということにしておきたい。
+Here is a list of some of the parts that are currently lacking:
 
-現状の実装で足りていない部分を一応列挙しておく。
+- Tick implementation. The current implementation is quite simplified, and for example, in the chart above, the interval of the y-axis ticks is 63, which is arbitrary.
+- Commonly used data handling functions such as `d3.csv` and `d3.max`
+- Other parts that are simplified or use magic numbers
 
-- 目盛りの実装。現状の実装ではかなり省略されているので、例えば先ほどのグラフではy軸のtickの間隔が63刻みと中途半端になっている。
-- `d3.csv` や `d3.max` などデータハンドリングのよく使われる機能
-- その他実装を省略してマジックナンバーでごまかしている部分
 
 
 ## 最後に
 
-### D3とはなにか
+### What is D3?
 
-そもそも「D3が難しい」といったとき、「D3は可視化ライブラリとして難しい」というふうに解釈されるが、
-D3のことを「可視化ライブラリ」「チャートライブラリ」というとミスリーディングなのかなと思う。
-いやもちろん、D3はグラフを描画するために使うライブラリではあるのだが、D3を扱う上ではユーザーはSVGを意識する必要があって、
-その一方で通常の可視化ライブラリの場合はグラフの中身の構造を意識しなくてよい、という点でD3は他の有名な可視化ライブラリとは大きく異なる。
+D3 is often called a "visualization library" or "chart library", but this can be misleading[^d3-is-low-level-toolbox].
+Unlike many chart libraries, D3 requires a good understanding of SVG and the structure of the generated graphics.
 
-記事を書いているときに改めて調べて気づいたが、[公式ドキュメント][d3-what-is-d3]でも *"D3 is a low-level toolbox", "D3 is not a charting library in the traditional sense."* と書かれている[^d3-is-not-chart-library]。
+In fact, introductory descriptions of D3 tend to avoid calling it a charting library directly, instead using phrases like ["a JavaScript library for visualizing data"](https://github.com/d3/d3) or ["the JavaScript library for bespoke data visualization"](https://d3js.org/).
+
+[^d3-is-low-level-toolbox]: According to the [official documentation][d3-what-is-d3], D3 is described as "a low-level toolbox" and "not a charting library in the traditional sense."
+And other documents state ["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3) or ["The JavaScript library for bespoke data visualization"](https://d3js.org/).
 
 [d3-what-is-d3]: https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox
 
 [^d3-is-not-chart-library]:
-え？でも普通にD3はグラフ描画ライブラリ/チャートライブラリって紹介されてない？と疑問に思ったので調べてみた。
-D3の紹介文を見てみると、["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3)だったり["The JavaScript library for bespoke data visualization"](https://d3js.org/)（bespokeに強調）だったりと明言を避けた書き方をしていて、chart library などといい切っていないことに気づく。
-なるほどねぇ。
 
 
 ### あらためて、D3はなぜ難しいのか？
 
-D3をチャートライブラリではなくSVGを生成するライブラリと認識すれば、D3の難しさはある程度説明がつくような気もするが、その他にも難しさの原因はあるように感じる。
-この記事を書いているときに思いついた理由を列挙してみる。
+While recognizing D3 as an SVG-generating library explains some of its difficulties, there are other reasons as well.
+Here are a few I noticed while writing this article:
 
-- 命名や定義が難しい
-  - ギリギリまで文字数を削るような命名をしている (例えば `attr` や `data`)[^d3-naming]
-  - 1つの関数でいろいろな機能（例えば getter/setter）をまとめて表現していたりする。
-    例えば、[selection.datum][d3-selection-datum] は引数の型（undefined, value, null, function）によってそれぞれ挙動が変わるのだが、それを文章だけで説明されるのはしんどい。
-- エディタ上でドキュメントの閲覧や補完をするのが難しい。ただし、`@types/d3` を導入すれば一応型と関数の説明はエディタから簡単に開くことができる[^rewrite-in-typescript]。
-- d3-selection が難しい。
-  ドキュメントと実装とテストを読んで、ようやく理解できた関数がいくつかあった
-- コピペしてそのまま動くコードがほしいのに、Observable のコード（そのままでは流用しづらい）しか出てこない
+- Naming is terse and sometimes ambiguous (e.g., `attr`, `data`)[^d3-naming]. Some functions, like [selection.datum][d3-selection-datum], behave differently depending on argument types, making them hard to understand from the docs alone.
+- Documentation and autocomplete are limited in editors, unless you use `@types/d3`[^rewrite-in-typescript].
+- d3-selection is especially hard to understand without reading the docs, implementation, and tests
+- Most code examples are from Observable, which are hard to reuse directly.
 
 [d3-selection-datum]: https://github.com/d3/d3-selection#selection_datum
 
-とはいえ、じゃあどうすればとっつきやすくなるか？と聞かれると返答に困る[^d3-improvement]ので、頑張ってD3に慣れるしかなさそうだ。
 
-[^d3-naming]: メソッド名を短くしたいというのも理解できなくはないが、
-細かい部分を調整したり、複雑な可視化を行えたりする、というD3の特性上、命名に関しては短くすることより、どちらかといえば冗長気味にしたほうがいいケースが多いと思う。
-例えば、日々のデータハンドリングの途中で行う可視化（読み返されることを考慮する必要がほぼない）と、ウェブサイトで大きく表示される一点ものの複雑な可視化（書かれたあとにメンテナンスのために読み返されることが多い）だと、前者であれば簡潔なほうがよさそうだが、後者であれば冗長気味になっても可読性が高いほうがいいだろう。
+[^d3-naming]: I can understand the desire to shorten the method names, but given D3's characteristics of allowing detailed adjustments and complex visualizations, it's often better to be verbose rather than terse in naming.
 
-[^rewrite-in-typescript]: TypeScriptで型を付けようという提案が2018年に上がっているが却下されている ([d3/d3#3284])。
-却下されるのは意外だなと最初は思ったが、d3配下の一つ一つのリポジトリはわりと小さいということもあって、最悪型なしでもなんとか理解できる、というのはあるかもしれない。
+[^rewrite-in-typescript]: The proposal to add TypeScript types was raised in 2018 but rejected ([d3/d3#3284]).
 
 [d3/d3#3284]: https://github.com/d3/d3/issues/3284
-
-[^d3-improvement]: 関数名をもう少し長めにして、TypeScriptで型をつける、くらいでエンドユーザーの使用感はわりと改善しそうな気もするがどうだろうか？
-まあそれくらいの違いだったら、D3の資産を捨ててまで別ライブラリに移行するほどでもなさそう。
