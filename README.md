@@ -449,7 +449,7 @@ The reason for this coding style is that `data` and `enter` are somewhat complic
 
 The `d3.json` function simply returns a `Promise`, so the following implementation is sufficient.
 
-**examples/load-json/myd3.html の d3 定義の部分:**
+**d3 definition in examples/load-json/myd3.html:**
 ```js
 const d3 = {
   select: function (selector) {
@@ -571,7 +571,7 @@ In particular, in this section, we will refer to the implementation of [d3-selec
 
 Ignoring the scaling process and ticks for now, let's first draw just the bars of the bar chart as shown in the figure below.
 
-![Bar chart drawn with self-made D3 (without scaling, height is the value of sales)](.readme/bars-without-scaling.png)
+![Bar chart drawn with mini D3 (without scaling, height is the value of sales)](.readme/bars-without-scaling.png)
 
 First, let's create the code to draw this using the official D3.
 
@@ -586,7 +586,7 @@ First, let's create the code to draw this using the official D3.
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <script>
-    // スケーリングを実装していないので、とりあえず sales の最大値を埋めておく
+    // Since scaling is not implemented, for now, hardcode the maximum value of sales
     const height = 59;
     const width = 960;
     const barwidth = 50;
@@ -624,7 +624,7 @@ First, let's create the code to draw this using the official D3.
       svg.append("g").call(d3.axisLeft(yScale));
     });
 
-    // 仮実装
+    // Temporary implementation
     let called = -1;
     function xScale(name) {
       called += 1;
@@ -887,7 +887,7 @@ The code to draw the bar chart is as follows:
 To make this work with my D3, I need to additionally implement `scaleBand` and `scaleLinear`.
 Since it's getting long, I'll only include the implementation of `scaleLinear` here.
 
-**mini-d3.js から抜粋した scaleLinear の実装:**
+**Implementation of scaleLinear extracted from mini-d3.js:**
 ```js
 function scaleLinear() {
   const scale = function (x) {
@@ -922,7 +922,7 @@ function range(l, h, stepsize) {
 
 After adding this implementation to my D3 and opening the HTML in a browser, the following graph is displayed.
 
-![Bar chart drawn with self-made D3 (with scaling)](.readme/bars-with-scaling.png)
+![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
 
 ### Drawing Axes and Ticks
@@ -932,7 +932,7 @@ Now that the bars of the bar chart can be drawn, let's implement the functions t
 Roughly speaking, it just draws the axis line and places the text at the appropriate positions, but even a rough implementation can be relatively long.
 Therefore, I'll only include the implementation of `axisLeft` here.
 
-**mini-d3.js から抜粋した axisLeft の実装:**
+**Implementation of axisLeft extracted from mini-d3.js:**
 ```js
 const tickLength = 6;
 const tickLineWidth = 0.5;
@@ -989,7 +989,7 @@ Although there are several magic numbers and many missing features, it is still 
 I also want to be able to draw other graphs covered in [D3 Tips and Tricks v7.x][d3-tips].
 For example, by additionally implementing `d3.timeParse` and `d3.scaleTime`, you can draw line charts like the one below.
 
-![Line chart drawn with self-made D3](.readme/line-chart.png)
+![Line chart drawn with mini D3](.readme/line-chart.png)
 
 As you can guess from the implementation of "Drawing Axes and Ticks", the code becomes considerably longer and more complicated from here.
 I will leave it as a challenge for the reader to understand, as it would be faster to read the original D3 source code.
@@ -1002,7 +1002,7 @@ Here is a list of some of the parts that are currently lacking:
 
 
 
-## 最後に
+## Conclusion
 
 ### What is D3?
 
@@ -1019,7 +1019,7 @@ And other documents state ["D3 (or D3.js) is a free, open-source JavaScript libr
 [^d3-is-not-chart-library]:
 
 
-### あらためて、D3はなぜ難しいのか？
+### Why is D3 so difficult, again?
 
 While recognizing D3 as an SVG-generating library explains some of its difficulties, there are other reasons as well.
 Here are a few I noticed while writing this article:
