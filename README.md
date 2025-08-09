@@ -113,10 +113,7 @@ D3のバージョンについては、現在の最新版 ([v7.8.5](https://githu
 
 最後の `<script>` 内にあるJSが実行されると、`#chart` というIDがついている div 要素が更新され、次の図のように `chart` 内に `<div>hello world</div>` が追加される。
 
-{{ image(
-  title="hello-world (本家D3) の実行結果",
-  path="/images/build-your-own-d3/hello-world-d3.png"
-) }}
+![hello-world (本家D3) の実行結果](.readme/hello-world-d3.png)
 
 このサンプルで使われている `d3` を再実装してみる。
 
@@ -143,10 +140,7 @@ D3のバージョンについては、現在の最新版 ([v7.8.5](https://githu
 
 上記のコードをHTMLファイルとして保存してブラウザで開くと、本家D3バージョンと同じ挙動になっていることを確認できる。
 
-{{ image(
-  title="hello-world (Web APIを使うバージョン) の実行結果",
-  path="/images/build-your-own-d3/hello-world-vanillajs.png"
-) }}
+![hello-world (Web APIを使うバージョン) の実行結果](.readme/hello-world-vanillajs.png)
 
 さて、この記事の目的は「D3と同じインターフェースで同じような挙動をするライブラリを実装する」ということだった。
 そこで次にインターフェースを合わせてみる。
@@ -265,10 +259,7 @@ attr(key, value) {
 
 しかし、`attr` を追加しても、なぜか長方形は表示されない。
 
-{{ image (
-  title = "長方形は表示されない",
-  path = "/images/build-your-own-d3/rect-did-not-appear.png"
-) }}
+![長方形は表示されない](.readme/rect-did-not-appear.png)
 
 これはSVGを扱うときのハマりポイントなのだが、いったん理由は置いておくとして、
 
@@ -288,10 +279,7 @@ const child = document.createElementNS(
 にすれば解決する。
 実際、この変更を加えてみると、期待通り下図のように長方形が表示される。
 
-{{ image (
-  title = "長方形が表示された",
-  path = "/images/build-your-own-d3/rect-appeared.png"
-) }}
+![長方形が表示された](.readme/rect-appeared.png)
 
 なぜ `createElement` ではなく `createElementNS` を使う必要があるか？
 ここで作りたいのはSVG名前空間に属する `<svg>` なのだが、`document.createElement("svg")` だと HTML名前空間の `svg` 要素を作ってしまう[^createelement]からだ。
@@ -373,10 +361,7 @@ const child = document.createElementNS(
 
 ### 折れ線を描画する {#svg-path}
 
-{{ image (
-  title = "SVGのパスで描画したうずまき",
-  path = "/images/build-your-own-d3/svg-path.png"
-) }}
+![SVGのパスで描画したうずまき](.readme/svg-path.png)
 
 {% with_caption(title="examples/svg-path/d3.html") %}
 ```html
@@ -429,10 +414,7 @@ SVG のパス `<path>` については、参考になるリンクだけ貼って
 
 `d3.json` を使って上記のようなJSONファイルをロードし、それをもとに下図のように複数の長方形を描画してみる。
 
-{{ image (
-  title = "JSONの中身をもとに長方形を描画する",
-  path = "/images/build-your-own-d3/load-json.png"
-) }}
+![JSONの中身をもとに長方形を描画する](.readme/load-json.png)
 
 D3バージョンは以下の通り。
 
@@ -585,10 +567,7 @@ class Selection {
 
 このセクションでは、最終的に以下のような棒グラフ ([デモページ](https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html)) が描けるようになることを目標にして実装を進めていく。
 
-{{ image (
-  title = "自作バージョンのD3で描画した棒グラフ",
-  path = "/images/build-your-own-d3/bar-chart.png"
-) }}
+![自作バージョンのD3で描画した棒グラフ](.readme/bar-chart.png)
 
 グラフは「D3 Tips and Tricks v7.x」で使われていたもので、元データは[こちらのJSON](https://github.com/oshikiri/build-your-own-d3/blob/main/demo/data/sales.json)にアップロード済み。
 
@@ -600,10 +579,7 @@ class Selection {
 
 スケーリングの処理や目盛りなどは一旦無視して、下図のように棒グラフの棒の部分だけをまず描いてみる。
 
-{{ image (
-  title = "自作D3で描画した棒グラフ（スケーリングなし、heightがsalesの値になっている）",
-  path = "/images/build-your-own-d3/bars-without-scaling.png"
-) }}
+![自作D3で描画した棒グラフ（スケーリングなし、heightがsalesの値になっている）](.readme/bars-without-scaling.png)
 
 まずは本家D3を使ってこれを描画するコードを作る。
 
@@ -957,10 +933,7 @@ function range(l, h, stepsize) {
 
 この実装を自作D3に追加したあと、HTMLをブラウザで開くと以下のようなグラフが表示される。
 
-{{ image (
-  title = "自作D3で描画した棒グラフ（スケーリングあり）",
-  path = "/images/build-your-own-d3/bars-with-scaling.png"
-) }}
+![自作D3で描画した棒グラフ（スケーリングあり）](.readme/bars-with-scaling.png)
 
 
 ### 軸と目盛りを描画する {#bar-chart-axis}
@@ -1029,10 +1002,7 @@ function axisLeft(scale) {
 [D3 Tips and Tricks v7.x](https://leanpub.com/d3-t-and-t-v7) で扱われている他のグラフも描画できるようにしたい。
 詳細は省略するが、例えば `d3.timeParse` や `d3.scaleTime` などを追加で実装すると、以下のような折れ線グラフが書けるようになる。
 
-{{ image (
-  title = "自作バージョンのD3で描画した折れ線グラフ",
-  path = "/images/build-your-own-d3/line-chart.png"
-) }}
+![自作バージョンのD3で描画した折れ線グラフ](.readme/line-chart.png)
 
 「軸と目盛りを描画する」の実装を見ると想像がつくと思うが、これ以降は込み入ってくるので必要なコード量がかなり増えてくる。
 ここまで理解できればもう本家D3のソースコードを読んだほうが理解が早いと思うので、これ以降は読者の課題ということにしておきたい。
