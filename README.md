@@ -1002,11 +1002,10 @@ Here is a list of some of the parts that are currently lacking:
 
 
 
-## Conclusion
+## Appendix: Why is D3 Difficult?
 
-### What is D3?
-
-D3 is often called a "visualization library" or "chart library", but this can be misleading[^d3-is-low-level-toolbox].
+D3 is difficult because D3 is not a typical chart library but a low-level SVG toolbox.
+D3 is sometimes called a "visualization library" or "chart library", but this can be misleading[^d3-is-low-level-toolbox].
 Unlike many chart libraries, D3 requires a good understanding of SVG and the structure of the generated graphics.
 
 In fact, introductory descriptions of D3 tend to avoid calling it a charting library directly, instead using phrases like ["a JavaScript library for visualizing data"](https://github.com/d3/d3) or ["the JavaScript library for bespoke data visualization"](https://d3js.org/).
@@ -1016,10 +1015,6 @@ And other documents state ["D3 (or D3.js) is a free, open-source JavaScript libr
 
 [d3-what-is-d3]: https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox
 
-[^d3-is-not-chart-library]:
-
-
-### Why is D3 so difficult, again?
 
 While recognizing D3 as an SVG-generating library explains some of its difficulties, there are other reasons as well.
 Here are a few I noticed while writing this article:
