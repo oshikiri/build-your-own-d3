@@ -137,8 +137,10 @@ All code in this document was tested in Chrome v120.
 
 本家D3バージョンのグラフ描画処理のコードを再度眺めてみると、
 `d3.select("#chart").append("div").text("hello world");` という、D3に特徴的なメソッドチェインを基本としたインターフェースになっていることがわかる。
-また `d3.select` の返り値は [@types/d3-selection によれば Selection らしい](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/61748a217350dddbef9842803adf8533a8b1e8b9/types/d3-selection/index.d.ts#L107-L121)。
+また `d3.select` の返り値は [@types/d3-selection によれば Selection らしい][types-d3-selection]。
 以上の情報をもとに、ひとまず次のように Selection クラスを追加してみる[^original-d3-select]。
+
+[types-d3-selection]: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/61748a217350dddbef9842803adf8533a8b1e8b9/types/d3-selection/index.d.ts#L107-L121
 
 {% with_caption(title="demo/insert-text/myd3.html (自作バージョン)") %}
 ```html
@@ -279,10 +281,14 @@ const child = document.createElementNS(
 - [名前空間の速修講座 - SVG: スケーラブルベクターグラフィック | MDN](https://developer.mozilla.org/ja/docs/Web/SVG/Namespaces_Crash_Course)
 - [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
 
-[実際の append](https://d3js.org/d3-selection/modifying#selection_append) の実装では `append("svg")` の場合に名前空間として `http://www.w3.org/2000/svg` を使い、そうでない場合も親要素の名前空間を引き継ぐ実装になっている。
-ちなみに、D3では[SVG以外の名前空間もサポートしている](https://d3js.org/d3-selection/namespaces)。
+[実際の append][d3-selection-append] の実装では `append("svg")` の場合に名前空間として `http://www.w3.org/2000/svg` を使い、そうでない場合も親要素の名前空間を引き継ぐ実装になっている。
+ちなみに、D3では[SVG以外の名前空間もサポートしている]。
 
-[^createelement]: Document.createElementのドキュメントを注意深く読んでみると、たしかに「[HTML 文書において、 document.createElement() メソッドは tagName で指定された HTML 要素を生成し](https://developer.mozilla.org/ja/docs/Web/API/Document/createElement)」と明記されている。
+[^createelement]: Document.createElementのドキュメントを注意深く読んでみると、たしかに「[HTML 文書において、 document.createElement() メソッドは tagName で指定された HTML 要素を生成し][mdn-createElement]」と明記されている。
+
+[d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
+[SVG以外の名前空間もサポートしている]: https://d3js.org/d3-selection/namespaces
+[mdn-createElement]: https://developer.mozilla.org/ja/docs/Web/API/Document/createElement
 
 一応ソースコード全体をまとめておく。
 
@@ -464,8 +470,9 @@ const d3 = {
 ```
 {% end %}
 
-ちなみに実際の[d3-fetchのソースコード](https://github.com/d3/d3-fetch/blob/v3.0.1/src/json.js)もほぼ同じような実装になっている。
+ちなみに実際の[d3-fetchのソースコード][d3-fetch-json]もほぼ同じような実装になっている。
 
+[d3-fetch-json]: https://github.com/d3/d3-fetch/blob/v3.0.1/src/json.js
 
 
 ## パッケージとして整理する？ {#setup-package}
@@ -545,7 +552,9 @@ class Selection {
 {% end %}
 
 もしパッケージとして整備したい場合は、実際のD3の構成が参考になる。
-[実際のD3の構成](https://github.com/d3/d3/blob/v7.8.5/src/index.js)を見てみると、おおまかな機能ごとにリポジトリが別れていて、 d3/d3リポジトリですべてを読み込む形になっている[^d3-adopt-a-monorepo]。
+[実際のD3の構成][d3-structure]を見てみると、おおまかな機能ごとにリポジトリが別れていて、 d3/d3リポジトリですべてを読み込む形になっている[^d3-adopt-a-monorepo]。
+
+[d3-structure]: https://github.com/d3/d3/blob/v7.8.5/src/index.js
 
 私も最初に TypeScript で自作D3を実装したときは、本家D3と同様にディレクトリに分けた上で、一番上の index.ts で `export * from "./selection";` のように export する形にした。
 
@@ -555,14 +564,19 @@ class Selection {
 
 ## 棒グラフを描画する {#bar-chart}
 
-このセクションでは、最終的に以下のような棒グラフ ([デモページ](https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html)) が描けるようになることを目標にして実装を進めていく。
+このセクションでは、最終的に以下のような棒グラフ ([デモページ][bar-chart-demo]) が描けるようになることを目標にして実装を進めていく。
 
 ![自作バージョンのD3で描画した棒グラフ](.readme/bar-chart.png)
 
-グラフは「D3 Tips and Tricks v7.x」で使われていたもので、元データは[こちらのJSON](https://github.com/oshikiri/build-your-own-d3/blob/main/demo/data/sales.json)にアップロード済み。
+グラフは「D3 Tips and Tricks v7.x」で使われていたもので、元データは[こちらのJSON][sales-json]にアップロード済み。
+
+[bar-chart-demo]: https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html
+[sales-json]: https://github.com/oshikiri/build-your-own-d3/blob/main/demo/data/sales.json
 
 これ以降はかなり込み入った実装になるため、本家D3の実装で必要なものだけを抜き出す形で実装を進める。
-特にこのセクションでは、 [d3-selection](https://github.com/d3/d3-selection) の実装を参考に実装を進めていく。
+特にこのセクションでは、 [d3-selection] の実装を参考に実装を進めていく。
+
+[d3-selection]: https://github.com/d3/d3-selection
 
 
 ### 棒グラフの棒を描画する {#bar-chart-bars}
@@ -989,7 +1003,7 @@ function axisLeft(scale) {
 
 ## 折れ線グラフを描画する {#line-chart}
 
-[D3 Tips and Tricks v7.x](https://leanpub.com/d3-t-and-t-v7) で扱われている他のグラフも描画できるようにしたい。
+[D3 Tips and Tricks v7.x][d3-tips] で扱われている他のグラフも描画できるようにしたい。
 詳細は省略するが、例えば `d3.timeParse` や `d3.scaleTime` などを追加で実装すると、以下のような折れ線グラフが書けるようになる。
 
 ![自作バージョンのD3で描画した折れ線グラフ](.readme/line-chart.png)
@@ -1013,7 +1027,9 @@ D3のことを「可視化ライブラリ」「チャートライブラリ」と
 いやもちろん、D3はグラフを描画するために使うライブラリではあるのだが、D3を扱う上ではユーザーはSVGを意識する必要があって、
 その一方で通常の可視化ライブラリの場合はグラフの中身の構造を意識しなくてよい、という点でD3は他の有名な可視化ライブラリとは大きく異なる。
 
-記事を書いているときに改めて調べて気づいたが、[公式ドキュメント](https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox)でも *"D3 is a low-level toolbox", "D3 is not a charting library in the traditional sense."* と書かれている[^d3-is-not-chart-library]。
+記事を書いているときに改めて調べて気づいたが、[公式ドキュメント][d3-what-is-d3]でも *"D3 is a low-level toolbox", "D3 is not a charting library in the traditional sense."* と書かれている[^d3-is-not-chart-library]。
+
+[d3-what-is-d3]: https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox
 
 [^d3-is-not-chart-library]:
 え？でも普通にD3はグラフ描画ライブラリ/チャートライブラリって紹介されてない？と疑問に思ったので調べてみた。
@@ -1029,11 +1045,13 @@ D3をチャートライブラリではなくSVGを生成するライブラリと
 - 命名や定義が難しい
   - ギリギリまで文字数を削るような命名をしている (例えば `attr` や `data`)[^d3-naming]
   - 1つの関数でいろいろな機能（例えば getter/setter）をまとめて表現していたりする。
-    例えば、[selection.datum](https://github.com/d3/d3-selection#selection_datum) は引数の型（undefined, value, null, function）によってそれぞれ挙動が変わるのだが、それを文章だけで説明されるのはしんどい。
+    例えば、[selection.datum][d3-selection-datum] は引数の型（undefined, value, null, function）によってそれぞれ挙動が変わるのだが、それを文章だけで説明されるのはしんどい。
 - エディタ上でドキュメントの閲覧や補完をするのが難しい。ただし、`@types/d3` を導入すれば一応型と関数の説明はエディタから簡単に開くことができる[^rewrite-in-typescript]。
 - d3-selection が難しい。
   ドキュメントと実装とテストを読んで、ようやく理解できた関数がいくつかあった
 - コピペしてそのまま動くコードがほしいのに、Observable のコード（そのままでは流用しづらい）しか出てこない
+
+[d3-selection-datum]: https://github.com/d3/d3-selection#selection_datum
 
 とはいえ、じゃあどうすればとっつきやすくなるか？と聞かれると返答に困る[^d3-improvement]ので、頑張ってD3に慣れるしかなさそうだ。
 
@@ -1041,8 +1059,10 @@ D3をチャートライブラリではなくSVGを生成するライブラリと
 細かい部分を調整したり、複雑な可視化を行えたりする、というD3の特性上、命名に関しては短くすることより、どちらかといえば冗長気味にしたほうがいいケースが多いと思う。
 例えば、日々のデータハンドリングの途中で行う可視化（読み返されることを考慮する必要がほぼない）と、ウェブサイトで大きく表示される一点ものの複雑な可視化（書かれたあとにメンテナンスのために読み返されることが多い）だと、前者であれば簡潔なほうがよさそうだが、後者であれば冗長気味になっても可読性が高いほうがいいだろう。
 
-[^rewrite-in-typescript]: [TypeScriptで型を付けようという提案が2018年に上がっているが却下されている](https://github.com/d3/d3/issues/3284)。
+[^rewrite-in-typescript]: TypeScriptで型を付けようという提案が2018年に上がっているが却下されている ([d3/d3#3284])。
 却下されるのは意外だなと最初は思ったが、d3配下の一つ一つのリポジトリはわりと小さいということもあって、最悪型なしでもなんとか理解できる、というのはあるかもしれない。
+
+[d3/d3#3284]: https://github.com/d3/d3/issues/3284
 
 [^d3-improvement]: 関数名をもう少し長めにして、TypeScriptで型をつける、くらいでエンドユーザーの使用感はわりと改善しそうな気もするがどうだろうか？
 まあそれくらいの違いだったら、D3の資産を捨ててまで別ライブラリに移行するほどでもなさそう。
