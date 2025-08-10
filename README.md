@@ -916,53 +916,10 @@ Roughly speaking, it just draws the axis line and places the text at the appropr
 Therefore, I'll only include the implementation of `axisLeft` here.
 
 **Implementation of axisLeft extracted from mini-d3.js:**
-```js
-const tickLength = 6;
-const tickLineWidth = 0.5;
-
-function axisLeft(scale) {
-  return function (axisRoot) {
-    const mainLineLength = Math.abs(scale._range[1] - scale._range[0]);
-    const valueLine =
-      `M-${tickLength},${mainLineLength + tickLineWidth} ` +
-      `H${tickLineWidth} V${tickLineWidth} H-${tickLength}`;
-
-    axisRoot
-      .attr("fill", "none")
-      .attr("font-size", "10")
-      .attr("font-family", "sans-serif")
-      .attr("text-anchor", "end");
-    axisRoot
-      .append("path")
-      .attr("class", "domain")
-      .attr("stroke", "currentColor")
-      .attr("d", valueLine);
-
-    const ticks = axisRoot
-      .selectAll(".tick")
-      .data(scale.getTickPoints())
-      .enter()
-      .append("g")
-      .attr("class", "tick")
-      .attr("opacity", "1")
-      .attr("transform", (d) => `translate(0, ${scale(d)})`);
-
-    ticks.append("line").attr("stroke", "currentColor").attr("x2", -tickLength);
-    ticks
-      .append("text")
-      .attr("fill", "currentColor")
-      .attr("x", -9)
-      .attr("dy", "0.32em")
-      .text((d) => d);
-
-    return axisRoot;
-  };
-}
-```
 
 Here is the final code and demo page:
 
-- [mini-d3.js](https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js)
+- See axisLeft at [mini-d3.js](https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js)
 - [demo/bar_chart.html](https://oshikiri.github.io/build-your-own-d3/demo/bar_chart.html)
 
 Although there are several magic numbers and many missing features, it is still possible to draw a bar chart with just about 300 lines.
