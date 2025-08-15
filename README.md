@@ -1,9 +1,9 @@
-# Build Your Own D3.js in 300 Lines of Codes: Understanding D3 Internals by Reimplementing from Scratch
+# Build Your Own D3.js in 300 Lines of Code: Understanding D3 Internals by Reimplementing from Scratch
 
 ![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
 To use [D3] effectively while understanding its internal workings, it's important to grasp these features in advance.
-To help with this, I created a script called [mini-d3.js] ([bar chart demo]) that can draw simple charts using a D3-like API.
+To help with this, I created a script called [mini-d3.js] and its [bar chart demo] that can draw simple charts using a D3-like API.
 
 [D3]: https://github.com/d3/d3
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
@@ -13,7 +13,7 @@ To help with this, I created a script called [mini-d3.js] ([bar chart demo]) tha
 ## Introduction
 
 The goal of this document is to make it possible to replace `<script src="https://d3js.org/d3.v7.min.js"></script>` with your own `<script src="./mini-d3.js"></script>` in D3 sample code, and have it work the same way.
-Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the main sample code working.
+Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the bar chart demo code working.
 
 ### Scope of This Document
 After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
