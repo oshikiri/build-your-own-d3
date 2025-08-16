@@ -12,8 +12,7 @@ To help with this, I created a script called [mini-d3.js] and its [bar chart dem
 
 ## Introduction
 
-The goal of this document is to make it possible to replace `<script src="https://d3js.org/d3.v7.min.js"></script>` with your own `<script src="./mini-d3.js"></script>` in D3 sample code, and have it work the same way.
-Of course, it's not realistic to reimplement all of D3's features, so the aim is just to get the bar chart demo code working.
+The goal of this document is to enable you to replace `<script src="https://d3js.org/d3.v7.min.js"></script>` with `<script src="./mini-d3.js"></script>` in the D3 [bar chart demo], and have it work the same way.
 
 ### Scope of This Document
 After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
