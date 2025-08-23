@@ -15,7 +15,7 @@ async function loadDocument(path) {
     const jsonPath = path_module.resolve(path_module.dirname(path), url);
     const data = fs.readFileSync(jsonPath);
     return {
-      json: () => JSON.parse(data),
+      json: () => JSON.parse(data.toString()),
       text: () => data.toString(),
     };
   };
