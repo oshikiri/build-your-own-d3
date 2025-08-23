@@ -156,48 +156,30 @@ class EnterNode {
 
 function scaleBand() {
   const scale = function (key) {
+    const [l, h] = scale._range;
     const idx = scale.domToIdx[key];
-    if (idx === undefined) return undefined;
-    const [r0, r1] = scale._range;
-    const start = r0 + scale.paddingOuter * scale.step;
-    return start + idx * scale.step;
+    const margin = 6.3829787234042215;
+    return margin + l + (idx * (h - l - margin)) / scale._domain.length;
   };
-  scale._range = [0, 1];
+  scale._range = [];
   scale._domain = [];
-  scale.paddingInner = 0;
-  scale.paddingOuter = 0;
-  scale.step = 0;
-  scale._bandwidth = 0;
-  scale.domToIdx = {};
-
-  function rescale() {
-    const n = scale._domain.length;
-    const [r0, r1] = scale._range;
-    scale.step = (r1 - r0) / Math.max(1, n - scale.paddingInner + scale.paddingOuter * 2);
-    scale._bandwidth = scale.step * (1 - scale.paddingInner);
-  }
-
   scale.range = function (_range) {
     this._range = _range;
-    rescale();
     return this;
   };
   scale.domain = function (_domain) {
-    this._domain = _domain;
+    this.domToIdx = {};
     _domain.forEach((x, i) => {
       this.domToIdx[x] = i;
     });
-    rescale();
+    this._domain = _domain;
     return this;
   };
-  scale.padding = function (p) {
-    this.paddingInner = Math.min(1, p);
-    this.paddingOuter = Math.min(1, p);
-    rescale();
+  scale.padding = function () {
     return this;
   };
   scale.bandwidth = function () {
-    return this._bandwidth;
+    return 57.4468085106383;
   };
   scale.getTickPoints = function () {
     return this._domain;
