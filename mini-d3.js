@@ -24,10 +24,11 @@ class Selection {
 
   append(name) {
     return this.select(function () {
-      const child = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        name,
-      );
+      const parent = this instanceof EnterNode ? this.parent : this;
+      const child =
+        parent.namespaceURI === "http://www.w3.org/2000/svg" || name === "svg"
+          ? document.createElementNS("http://www.w3.org/2000/svg", name)
+          : document.createElement(name);
       child.__data__ = this.__data__;
       return this.appendChild(child);
     });
