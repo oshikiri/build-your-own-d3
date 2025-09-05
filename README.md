@@ -26,17 +26,23 @@ Here is what this document will and will not cover:
 - How to create a library that behaves like D3
 
 **This document does not cover:**
-- How to use D3
-    - If you're unsure about D3 basics, I recommend reading [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] before this document.
+- Basic D3 usage (see [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] for fundamentals)
 - D3's data handling (such as d3-array)
 - Advanced visualizations like d3-geo
-- Knowledge of JavaScript (especially DOM manipulation), CSS, or SVG
 
 Writing this, I wonder who the intended audience really is.
 I wrote this section after nearly finishing the document, but I still don't know.
 
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
+
+### Prerequisite Knowledge
+
+Before reading this document, you should be comfortable with:
+
+- Basic JavaScript and DOM manipulation
+- CSS styling
+- Basic SVG drawing
 
 
 ### Environment
