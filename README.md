@@ -680,7 +680,7 @@ class Selection {
   }
 
   #makeSelectFunction(selectorOrFunction) {
-    if (typeof selectorOrFunction == "string") {
+    if (typeof selectorOrFunction === "string") {
       return function () {
         return this.querySelector(selectorOrFunction);
       };
@@ -698,7 +698,7 @@ class Selection {
   }
 
   static getValue(valueOrFunction, __data__) {
-    if (typeof valueOrFunction == "function") {
+    if (typeof valueOrFunction === "function") {
       return valueOrFunction(__data__);
     } else if (["number", "string"].includes(typeof valueOrFunction)) {
       return String(valueOrFunction);
