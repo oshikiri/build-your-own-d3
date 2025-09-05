@@ -17,8 +17,8 @@ Note that mini-d3.js is a simplified, educational library, not a compatible D3 s
 It intentionally omits most of D3's features and only supports the examples in this document.
 
 ### Scope of This Document
-After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
-So, I decided to narrow down the topics.
+This section clarifies the document's purpose and the boundaries of its coverage.
+It concentrates on core D3 APIs and the process of crafting a minimal D3-like library[^scope].
 Here is what this document will and will not cover:
 
 **This document covers:**
@@ -37,6 +37,8 @@ I wrote this section after nearly finishing the document, but I still don't know
 
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
+
+[^scope]: After starting to write this document, I realized that covering everything about D3 would be impossible to finish, so I decided to narrow down the topics.
 
 
 ### Environment
