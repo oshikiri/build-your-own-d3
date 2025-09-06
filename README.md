@@ -64,8 +64,8 @@ These shapes are used as building blocks for basic charts like bar charts and li
 ### Drawing Text
 First, let's implement a process that simply draws the string `hello world` on the screen.
 
-If you try to implement this in D3, the code would look like this.
-From here on, I will refer to code that draws charts using the official D3's `https://d3js.org/d3.v7.min.js` as the "official D3" version.
+If you implement this in D3, the code looks like the following.
+From now on, we refer to the officially distributed d3.v7.min.js as "official D3".
 
 I'll add line-by-line comments for explanation.
 
