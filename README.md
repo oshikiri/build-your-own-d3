@@ -2,8 +2,8 @@
 
 ![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
-To use [D3] effectively while understanding its internal workings, it's important to grasp these features in advance.
-To help with this, I created a script called [mini-d3.js] and its [bar chart demo] that can draw simple charts using a D3-like API.
+To use [D3] effectively while understanding its internal workings, it's important to grasp features like the selection API, scale, and axis in advance.
+To help with this, I created a script called [mini-d3.js] and its [bar chart demo] that demonstrate these features using a D3-like API.
 
 [D3]: https://github.com/d3/d3
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
@@ -17,8 +17,8 @@ Note that mini-d3.js is a simplified, educational library, not a compatible D3 s
 It intentionally omits most of D3's features and only supports the examples in this document.
 
 ### Scope of This Document
-After starting to write this document, I realized that covering everything about D3 would be impossible to finish.
-So, I decided to narrow down the topics.
+This section clarifies the document's purpose and the boundaries of its coverage.
+It concentrates on core D3 APIs and the process of crafting a minimal D3-like library[^scope].
 Here is what this document will and will not cover:
 
 **This document covers:**
@@ -36,6 +36,8 @@ I wrote this section after nearly finishing the document, but I still don't know
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
 
+[^scope]: After starting to write this document, I realized that covering everything about D3 would be impossible to finish, so I decided to narrow down the topics.
+
 ### Prerequisite Knowledge
 
 Before reading this document, you should be comfortable with:
@@ -43,7 +45,6 @@ Before reading this document, you should be comfortable with:
 - Basic JavaScript and DOM manipulation
 - CSS styling
 - Basic SVG drawing
-
 
 ### Environment
 
@@ -686,7 +687,7 @@ class Selection {
   }
 
   #makeSelectFunction(selectorOrFunction) {
-    if (typeof selectorOrFunction == "string") {
+    if (typeof selectorOrFunction === "string") {
       return function () {
         return this.querySelector(selectorOrFunction);
       };
@@ -704,7 +705,7 @@ class Selection {
   }
 
   static getValue(valueOrFunction, __data__) {
-    if (typeof valueOrFunction == "function") {
+    if (typeof valueOrFunction === "function") {
       return valueOrFunction(__data__);
     } else if (["number", "string"].includes(typeof valueOrFunction)) {
       return String(valueOrFunction);
