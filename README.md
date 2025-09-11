@@ -26,7 +26,8 @@ Here is what this document will and will not cover:
 - How to create a library that behaves like D3
 
 **This document does not cover:**
-- Basic D3 usage (see [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] for fundamentals)
+- How to use D3
+    - If you're unsure about D3 basics, I recommend reading [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] before this document.
 - D3's data handling (such as d3-array)
 - Advanced visualizations like d3-geo
 
