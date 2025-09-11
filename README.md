@@ -135,7 +135,7 @@ Based on this information, let's add a `Selection` class as shown below[^origina
 
   <script>
     const d3 = {
-      select: function (selector) {
+      select(selector) {
         const el = document.querySelector(selector);
         return new Selection(el);
       },
@@ -287,7 +287,7 @@ For reference, here is the complete source code.
 
   <script>
     const d3 = {
-      select: function (selector) {
+      select(selector) {
         const el = document.querySelector(selector);
         return new Selection(el);
       },
@@ -438,7 +438,7 @@ The `d3.json` function simply returns a `Promise`, so the following implementati
 **d3 definition in examples/load-json/myd3.html:**
 ```js
 const d3 = {
-  select: function (selector) {
+  select(selector) {
     const el = document.querySelector(selector);
     return new Selection(el);
   },
@@ -493,7 +493,7 @@ However, for the sake of step-by-step explanation, this document keeps all imple
 **examples/setup-package/myd3.js:**
 ```js
 const d3 = {
-  select: function (selector) {
+  select(selector) {
     const el = document.querySelector(selector);
     return new Selection(el);
   },
@@ -629,11 +629,11 @@ Based on the implementation of d3-selection, let's add the following implementat
 **examples/bar-chart/bars/myd3.js:**
 ```js
 const d3 = {
-  select: function (selector) {
+  select(selector) {
     const element = document.querySelector(selector);
     return new Selection([[element]], [document.documentElement]);
   },
-  json: async function (path) {
+  async json(path) {
     return fetch(path).then((response) => response.json());
   },
   scaleBand,

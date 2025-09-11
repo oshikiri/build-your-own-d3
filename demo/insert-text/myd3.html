@@ -5,7 +5,7 @@
 
   <script>
     const d3 = {
-      select: function (selector) {
+      select(selector) {
         const el = document.querySelector(selector);
         return new Selection(el);
       },
