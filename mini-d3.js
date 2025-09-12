@@ -1,9 +1,9 @@
 const d3 = {
-  select: function (selector) {
+  select(selector) {
     const element = document.querySelector(selector);
     return new Selection([[element]], [document.documentElement]);
   },
-  json: async function (path) {
+  async json(path) {
     return fetch(path).then((response) => response.json());
   },
   scaleBand,
