@@ -443,9 +443,8 @@ const d3 = {
     return new Selection(el);
   },
   async json(path) {
-    return fetch(path)
-      .then((response) => response.text())
-      .then((data) => JSON.parse(data));
+    const response = await fetch(path);
+    return response.json();
   },
 };
 ```
@@ -498,8 +497,8 @@ const d3 = {
     return new Selection(el);
   },
   async json(path) {
-    return fetch(path)
-      .then((response) => response.json())
+    const response = await fetch(path);
+    return response.json();
   },
 };
 
@@ -634,7 +633,8 @@ const d3 = {
     return new Selection([[element]], [document.documentElement]);
   },
   async json(path) {
-    return fetch(path).then((response) => response.json());
+    const response = await fetch(path);
+    return response.json();
   },
   scaleBand,
   scaleLinear,
