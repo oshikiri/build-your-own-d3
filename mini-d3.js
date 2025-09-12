@@ -4,7 +4,8 @@ const d3 = {
     return new Selection([[element]], [document.documentElement]);
   },
   async json(path) {
-    return fetch(path).then((response) => response.json());
+    const response = await fetch(path);
+    return response.json();
   },
   scaleBand,
   scaleLinear,
