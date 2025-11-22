@@ -14,9 +14,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
       - name: Build and test
         run: |
-          npm install
+          npm ci
           npm run check:format
           npm test
       - name: Setup public/ directory
