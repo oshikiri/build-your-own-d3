@@ -1,19 +1,18 @@
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const fs = require("fs");
-const path_module = require("path");
+import { JSDOM } from "jsdom";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
-async function loadDocument(path) {
-  const html = fs.readFileSync(path).toString();
-  const filePath = path_module.resolve(path);
+async function loadDocument(filePath) {
+  const html = readFileSync(filePath).toString();
+  const resolvedFilePath = path.resolve(filePath);
   const dom = new JSDOM(html, {
     runScripts: "dangerously",
     resources: "usable",
-    url: `file://${filePath}`,
+    url: `file://${resolvedFilePath}`,
   });
   dom.window.fetch = async (url) => {
-    const jsonPath = path_module.resolve(path_module.dirname(path), url);
-    const data = fs.readFileSync(jsonPath);
+    const jsonPath = path.resolve(path.dirname(filePath), url);
+    const data = readFileSync(jsonPath);
     return {
       json: () => JSON.parse(data.toString()),
       text: () => data.toString(),
@@ -26,4 +25,4 @@ async function loadDocument(path) {
   });
 }
 
-module.exports = { loadDocument };
+export { loadDocument };
