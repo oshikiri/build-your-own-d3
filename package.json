@@ -2,17 +2,17 @@
   "name": "build-your-own-d3",
   "version": "0.1.0",
   "description": "",
+  "type": "module",
   "main": "mini-d3.js",
   "scripts": {
     "format": "prettier --write .",
     "check:format": "prettier --check .",
-    "test": "jest"
+    "test": "node --test"
   },
   "author": "oshikiri",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^30.0.5",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.2.0",
     "prettier": "^3.6.2"
   }
 }
