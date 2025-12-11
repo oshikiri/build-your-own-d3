@@ -18,11 +18,16 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: package-lock.json
+      - name: Restore npm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-node-
       - name: Build and test
         run: |
-          npm ci
+          npm ci --prefer-offline
           npm run check:format
           npm test
       - name: Setup public/ directory
