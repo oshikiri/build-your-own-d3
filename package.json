@@ -12,7 +12,7 @@
   "author": "oshikiri",
   "license": "ISC",
   "devDependencies": {
-    "jsdom": "^27.3.0",
+    "jsdom": "^27.4.0",
     "prettier": "^3.7.4"
   }
 }
