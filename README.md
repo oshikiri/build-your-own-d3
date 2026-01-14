@@ -22,8 +22,8 @@ It concentrates on core D3 APIs and the process of crafting a minimal D3-like li
 Here is what this document will and will not cover:
 
 **This document covers:**
-- The behavior and implementation of D3's basic APIs
-- How to create a library that behaves like D3
+- The behavior and implementation of D3's basic APIs (selection, data join, scale, axis)
+- How to reimplement a minimal subset of D3 for educational purposes
 
 **This document does not cover:**
 - How to use D3
@@ -31,9 +31,6 @@ Here is what this document will and will not cover:
 - D3's data handling (such as d3-array)
 - Advanced visualizations like d3-geo
 - Knowledge of JavaScript (especially DOM manipulation), CSS, or SVG
-
-Writing this, I wonder who the intended audience really is.
-I wrote this section after nearly finishing the document, but I still don't know.
 
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
@@ -268,12 +265,11 @@ Therefore, to create an `<svg>` element in the SVG namespace, you need to explic
 - [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
 
 In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
-By the way, D3 also [supports namespaces other than SVG][d3-selection-namespaces].
+From here on, this chapter only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
 
 [^createelement]: I realized that [the MDN documentation][mdn-createElement] for `Document.createElement` clearly states: "In an HTML document, the `document.createElement()` method creates the HTML element specified by `localName` ..."
 
 [d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
-[d3-selection-namespaces]: https://d3js.org/d3-selection/namespaces
 [mdn-createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 
 For reference, here is the complete source code.
