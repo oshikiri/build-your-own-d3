@@ -934,9 +934,7 @@ Here is a list of some of the parts that are currently lacking:
 
 
 ## Appendix: Background of this document
-When I first tried to create more complex visualizations with [D3] (D3.js), I found it difficult to grasp[^d3-is-difficult].
-
-[^d3-is-difficult]: For reference, it seems this is a common sentiment: [The Trouble with D3][trouble-with-d3], [Is it just me, or is D3.js too hard?][d3-too-hard], [Could The Developer Experience For D3.js Be Improved][d3-dev-exp]
+When I first tried to create more complex visualizations with [D3] (D3.js), I found it difficult to grasp.
 
 In my opinion, the challenges of learning D3 stem from the following points:
 
