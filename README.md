@@ -523,14 +523,6 @@ class Selection {
 }
 ```
 
-If you want to organize it as a package, the actual structure of D3 can be a reference.
-Looking at [the actual structure of D3][d3-structure], it seems that the repositories are divided roughly by functionality, and the d3/d3 repository is used to load all d3-* packages[^d3-adopt-a-monorepo]。
-
-[d3-structure]: https://github.com/d3/d3/blob/v7.8.5/src/index.js
-
-[^d3-adopt-a-monorepo]: However, this may change in the future:
-  [Adopt a monorepo · Issue #3791 · d3/d3](https://github.com/d3/d3/issues/3791)
-
 
 ## Drawing Bar Charts
 
