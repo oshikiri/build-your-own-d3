@@ -22,7 +22,7 @@ jobs:
           cache-dependency-path: package-lock.json
       - name: Build and test
         run: |
-          npm ci
+          npm ci --prefer-offline --no-audit --no-fund
           npm run check:format
           npm test
       - name: Setup public/ directory
