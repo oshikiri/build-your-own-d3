@@ -1,9 +1,9 @@
-# Build Your Own D3.js in 300 Lines of Code: Understanding D3's Core Concepts by Reimplementing D3-like library from Scratch
+# Build Your Own Mini D3.js in 300 Lines of Code: Understanding D3's Core Concepts by Reimplementing a D3-like Library from Scratch
 
 ![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
-To use [D3] effectively while understanding its internal workings, it's important to grasp features like the selection API, scale, and axis in advance.
-To help with this, I created a script called [mini-d3.js] and its [bar chart demo] that demonstrate these features using a D3-like API.
+To use [D3] effectively, it helps to understand core building blocks such as selections, scales, and axes.
+This repository includes [mini-d3.js] and a [bar chart demo] that demonstrate these ideas with a D3-like API.
 
 [D3]: https://github.com/d3/d3
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
@@ -17,9 +17,7 @@ Note that mini-d3.js is a simplified, educational library, not a compatible D3 s
 It intentionally omits most of D3's features and only supports the examples in this document.
 
 ### Scope of This Document
-This section clarifies the document's purpose and the boundaries of its coverage.
-It concentrates on core D3 APIs and the process of crafting a minimal D3-like library.
-Here is what this document will and will not cover:
+This document focuses on a minimal subset of D3 and how to reimplement it from scratch.
 
 **This document covers:**
 - The behavior and implementation of D3's basic APIs (selection, data join, scale, axis)
@@ -30,8 +28,8 @@ Here is what this document will and will not cover:
     - If you're unsure about D3 basics, I recommend reading [D3 Tips and Tricks v7.x by Malcolm Maclean][d3-tips] before this document.
 - D3's data handling (such as d3-array)
 - Advanced visualizations like d3-geo
-- Knowledge of JavaScript (especially DOM manipulation), CSS, or SVG
 
+**Prerequisites:** Basic JavaScript/DOM and SVG knowledge is assumed.
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
 
@@ -46,11 +44,11 @@ The last major change to the basic API was in the [2018 update][d3-2018-update],
 All code in this document was tested in Chrome v120.
 
 > [!NOTE]
-> As of 2026-01-17, d3-selection API (which appears later) was [last updated 4 years ago][d3-selection-last-update-link].
+> As of 2026-01-17, d3-selection API (which appears later) was [last updated 4 years ago (2021-06-08)][d3-selection-last-update-link].
 
 [d3-v7.9.0]: https://github.com/d3/d3/blob/v7.9.0
 [d3-2018-update]: https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50
-[d3-selection-last-update-link]: https://github.com/d3/d3-selection/commit/91245ee124ec4dd491e498ecbdc9679d75332b49
+[d3-selection-last-update-link]: https://www.npmjs.com/package/d3-selection?activeTab=versions
 
 
 ## Drawing Simple Shapes
@@ -269,7 +267,7 @@ Therefore, to create an `<svg>` element in the SVG namespace, you need to explic
 - [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
 
 In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
-From here on, this chapter only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
+From here on, this section only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
 
 [d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
 [mdn-createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
@@ -613,7 +611,7 @@ First, let's create the code to draw this using the official D3.
 </body>
 ```
 
-To make this sample code work with my D3, I need to implement `d3.selectAll`, `Selection.data`, and `Selection.enter`, and also make `Selection.attr` able to use the bound data.
+To make this sample code work with my D3, I need to implement `Selection.selectAll`, `Selection.data`, and `Selection.enter`, and also make `Selection.attr` able to use the bound data.
 Based on the implementation of d3-selection, let's add the following implementations.
 
 **examples/bar-chart/bars/myd3.js:**
