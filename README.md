@@ -46,7 +46,7 @@ The last major change to the basic API was in the [2018 update][d3-2018-update],
 All code in this document was tested in Chrome v120.
 
 > [!NOTE]
->As of 2026-01-17, d3-selection API (which appears later) was [last updated 4 years ago][d3-selection-last-update-link].
+> As of 2026-01-17, d3-selection API (which appears later) was [last updated 4 years ago][d3-selection-last-update-link].
 
 [d3-v7.9.0]: https://github.com/d3/d3/blob/v7.9.0
 [d3-2018-update]: https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50
@@ -964,7 +964,7 @@ In fact, introductory descriptions of D3 tend to avoid calling it a charting lib
 
 > [!NOTE]
 > According to the [official documentation][d3-what-is-d3], D3 is described as "a low-level toolbox" and "not a charting library in the traditional sense."
->And other documents state ["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3) or ["The JavaScript library for bespoke data visualization"](https://d3js.org/).
+> And other documents state ["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3) or ["The JavaScript library for bespoke data visualization"](https://d3js.org/).
 
 [d3-what-is-d3]: https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox
 
