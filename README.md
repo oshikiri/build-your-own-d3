@@ -41,7 +41,7 @@ Here is what this document will and will not cover:
 ### Environment
 
 
-This document is based on D3 ([v7.8.5][d3-v7.8.5]), the latest version at the time of writing.
+This document is based on D3 ([v7.9.0][d3-v7.9.0]), the latest version at the time of writing.
 Since this document only covers basic features, differences in recent versions should have little effect.
 The last major change to the basic API was in the [2018 update][d3-2018-update], and D3 has been stable since then [^d3-selection-last-update].
 
@@ -49,7 +49,7 @@ All code in this document was tested in Chrome v120.
 
 [^d3-selection-last-update]: As of September 30, 2023, d3-selection (which appears later) was [last updated two years ago][d3-selection-last-update-link].
 
-[d3-v7.8.5]: https://github.com/d3/d3/blob/v7.8.5
+[d3-v7.9.0]: https://github.com/d3/d3/blob/v7.9.0
 [d3-2018-update]: https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50
 [d3-selection-last-update-link]: https://github.com/d3/d3-selection/commit/91245ee124ec4dd491e498ecbdc9679d75332b49
 
