@@ -1,4 +1,4 @@
-# Build Your Own D3.js in 300 Lines of Code: Understanding D3 Internals by Reimplementing from Scratch
+# Build Your Own D3.js in 300 Lines of Code: Understanding D3's Core Concepts by Reimplementing D3-like library from Scratch
 
 ![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
