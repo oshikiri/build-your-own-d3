@@ -18,7 +18,7 @@ It intentionally omits most of D3's features and only supports the examples in t
 
 ### Scope of This Document
 This section clarifies the document's purpose and the boundaries of its coverage.
-It concentrates on core D3 APIs and the process of crafting a minimal D3-like library[^scope].
+It concentrates on core D3 APIs and the process of crafting a minimal D3-like library.
 Here is what this document will and will not cover:
 
 **This document covers:**
@@ -35,19 +35,18 @@ Here is what this document will and will not cover:
 
 [d3-tips]: https://leanpub.com/d3-t-and-t-v7
 
-[^scope]: After starting to write this document, I realized that covering everything about D3 would be impossible to finish, so I decided to narrow down the topics.
-
 
 ### Environment
 
 
 This document is based on D3 ([v7.9.0][d3-v7.9.0]), the latest version at the time of writing.
 Since this document only covers basic features, differences in recent versions should have little effect.
-The last major change to the basic API was in the [2018 update][d3-2018-update], and D3 has been stable since then [^d3-selection-last-update].
+The last major change to the basic API was in the [2018 update][d3-2018-update], and D3 has been stable since then.
 
 All code in this document was tested in Chrome v120.
 
-[^d3-selection-last-update]: As of September 30, 2023, d3-selection (which appears later) was [last updated two years ago][d3-selection-last-update-link].
+> [!NOTE]
+>As of 2026-01-17, d3-selection API (which appears later) was [last updated 4 years ago][d3-selection-last-update-link].
 
 [d3-v7.9.0]: https://github.com/d3/d3/blob/v7.9.0
 [d3-2018-update]: https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-50
@@ -119,7 +118,10 @@ So, let's match the interface next.
 
 Looking again at the official D3 version's chart drawing code, you can see that `d3.select("#chart").append("div").text("hello world");` uses D3's characteristic method-chaining interface.
 Also, according to [@types/d3-selection][types-d3-selection], the return value of `d3.select` is a `Selection`.
-Based on this information, let's add a `Selection` class as shown below[^original-d3-select].
+Based on this information, let's add a `Selection` class as shown below.
+
+> [!NOTE]
+> The [actual implementation of `d3.select`](https://github.com/d3/d3-selection/blob/v3.0.0/src/select.js) also just returns a [`Selection`](https://github.com/d3/d3-selection/blob/v3.0.0/src/selection/index.js), just like our mini-d3 version.
 
 [types-d3-selection]: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/61748a217350dddbef9842803adf8533a8b1e8b9/types/d3-selection/index.d.ts#L107-L121
 
@@ -171,7 +173,6 @@ If you save this as HTML and open it in your browser, you will see it behaves th
 From here, we will gradually extend this implementation to support more shapes and charts.
 
 
-[^original-d3-select]: The [actual implementation of `d3.select`](https://github.com/d3/d3-selection/blob/v3.0.0/src/select.js) also just returns a [`Selection`](https://github.com/d3/d3-selection/blob/v3.0.0/src/selection/index.js), just like our mini-d3 version.
 
 ### Drawing Rectangles
 
@@ -257,8 +258,11 @@ After making this change, the rectangle appears as expected, as shown in the fol
 ![Rectangle appears](.readme/rect-appeared.png)
 
 Why do we need to use `createElementNS` instead of `createElement`?
-What we want to create here is an `<svg>` element in the SVG namespace, but `document.createElement("svg")` creates an `svg` element in the HTML namespace[^createelement].
+What we want to create here is an `<svg>` element in the SVG namespace, but `document.createElement("svg")` creates an `svg` element in the HTML namespace.
 Therefore, to create an `<svg>` element in the SVG namespace, you need to explicitly specify the namespace as the first argument to `createElementNS`.
+
+> [!NOTE]
+> I realized that [the MDN documentation][mdn-createElement] for `Document.createElement` clearly states: "In an HTML document, the `document.createElement()` method creates the HTML element specified by `localName` ..."
 
 - [svg - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg)
 - [Namespaces crash course - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course)
@@ -266,8 +270,6 @@ Therefore, to create an `<svg>` element in the SVG namespace, you need to explic
 
 In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
 From here on, this chapter only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
-
-[^createelement]: I realized that [the MDN documentation][mdn-createElement] for `Document.createElement` clearly states: "In an HTML document, the `document.createElement()` method creates the HTML element specified by `localName` ..."
 
 [d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
 [mdn-createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
@@ -424,10 +426,11 @@ Here is the official D3 version code:
 </body>
 ```
 
-If you are familiar with D3 examples, you might find the absence of `data` and `enter` in the above code strange[^d3-without-selection].
+If you are familiar with D3 examples, you might find the absence of `data` and `enter` in the above code strange.
 The reason for this coding style is that `data` and `enter` are somewhat complicated and couldn't be implemented right away.
 
-[^d3-without-selection]: However, until you get used to the d3-selection API, it might not be a bad idea to continue using this kind of coding style (even though it's not the standard way). But once you're familiar with it, using the d3-selection API is more convenient.
+> [!NOTE]
+> However, until you get used to the d3-selection API, it might not be a bad idea to continue using this kind of coding style (even though it's not the standard way). But once you're familiar with it, using the d3-selection API is more convenient.
 
 The `d3.json` function simply returns a `Promise`, so the following implementation is sufficient.
 
@@ -942,9 +945,10 @@ In my opinion, the challenges of learning D3 stem from the following points:
 2. A significant amount of prerequisite knowledge is required, including JavaScript, HTML, and SVG.
 3. You need to get used to D3's unique APIs, especially `d3-selection`.
 
-This document explains how D3 works by reimplementing its core features from scratch, so we can draw the same kinds of graphs using a similar interface[^build-your-own-x].
+This document explains how D3 works by reimplementing its core features from scratch, so we can draw the same kinds of graphs using a similar interface.
 
-[^build-your-own-x]: Some say that the best way to understand the internals of popular tools or packages is to reimplement them yourself. Articles that do this have become a whole genre, known as [build-your-own-x].
+> [!NOTE]
+> Some say that the best way to understand the internals of popular tools or packages is to reimplement them yourself. Articles that do this have become a whole genre, known as [build-your-own-x].
 
 [build-your-own-x]: https://github.com/codecrafters-io/build-your-own-x
 
@@ -953,13 +957,14 @@ This document explains how D3 works by reimplementing its core features from scr
 ### Why is D3 Difficult?
 
 D3 is difficult because D3 is not a typical chart library but a low-level SVG toolbox.
-D3 is sometimes called a "visualization library" or "chart library", but this can be misleading[^d3-is-low-level-toolbox].
+D3 is sometimes called a "visualization library" or "chart library", but this can be misleading.
 Unlike many chart libraries, D3 requires a good understanding of SVG and the structure of the generated graphics.
 
 In fact, introductory descriptions of D3 tend to avoid calling it a charting library directly, instead using phrases like ["a JavaScript library for visualizing data"](https://github.com/d3/d3) or ["the JavaScript library for bespoke data visualization"](https://d3js.org/).
 
-[^d3-is-low-level-toolbox]: According to the [official documentation][d3-what-is-d3], D3 is described as "a low-level toolbox" and "not a charting library in the traditional sense."
-And other documents state ["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3) or ["The JavaScript library for bespoke data visualization"](https://d3js.org/).
+> [!NOTE]
+> According to the [official documentation][d3-what-is-d3], D3 is described as "a low-level toolbox" and "not a charting library in the traditional sense."
+>And other documents state ["D3 (or D3.js) is a free, open-source JavaScript library for visualizing data."](https://github.com/d3/d3) or ["The JavaScript library for bespoke data visualization"](https://d3js.org/).
 
 [d3-what-is-d3]: https://d3js.org/what-is-d3#d3-is-a-low-level-toolbox
 
@@ -967,16 +972,13 @@ And other documents state ["D3 (or D3.js) is a free, open-source JavaScript libr
 While recognizing D3 as an SVG-generating library explains some of its difficulties, there are other reasons as well.
 Here are a few I noticed while writing this article:
 
-- Naming is terse and sometimes ambiguous (e.g., `attr`, `data`)[^d3-naming]. Some functions, like [selection.datum][d3-selection-datum], behave differently depending on argument types, making them hard to understand from the docs alone.
-- Documentation and autocomplete are limited in editors, unless you use `@types/d3`[^rewrite-in-typescript].
+- Naming is terse and sometimes ambiguous (e.g., `attr`, `data`). Some functions, like [selection.datum][d3-selection-datum], behave differently depending on argument types, making them hard to understand from the docs alone.
+- Documentation and autocomplete are limited in editors, unless you use `@types/d3`.
 - d3-selection is especially hard to understand without reading the docs, implementation, and tests
 - Most code examples are from Observable, which are hard to reuse directly.
 
 [d3-selection-datum]: https://github.com/d3/d3-selection#selection_datum
 
 
-[^d3-naming]: I can understand the desire to shorten the method names, but given D3's characteristics of allowing detailed adjustments and complex visualizations, it's often better to be verbose rather than terse in naming.
-
-[^rewrite-in-typescript]: The proposal to add TypeScript types was raised in 2018 but rejected ([d3/d3#3284]).
 
 [d3/d3#3284]: https://github.com/d3/d3/issues/3284
