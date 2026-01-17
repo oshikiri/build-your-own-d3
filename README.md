@@ -3,7 +3,7 @@
 ![Bar chart drawn with mini D3 (with scaling)](.readme/bars-with-scaling.png)
 
 To use [D3] effectively, it helps to understand core building blocks such as selections, scales, and axes.
-This repository includes [mini-d3.js] and a [bar chart demo] that demonstrate these ideas with a D3-like API.
+This repository includes [mini-d3.js] (an educational reimplementation of a small subset of D3, not a drop-in replacement) and a [bar chart demo] built on top of it.
 
 [D3]: https://github.com/d3/d3
 [mini-d3.js]: https://github.com/oshikiri/build-your-own-d3/blob/main/mini-d3.js
