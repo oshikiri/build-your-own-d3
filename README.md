@@ -942,10 +942,6 @@ In my opinion, the challenges of learning D3 stem from the following points:
 2. A significant amount of prerequisite knowledge is required, including JavaScript, HTML, and SVG.
 3. You need to get used to D3's unique APIs, especially `d3-selection`.
 
-[trouble-with-d3]: https://medium.com/dailyjs/the-trouble-with-d3-4a84f7de011f
-[d3-too-hard]: https://www.quora.com/Is-it-just-me-or-is-D3-js-too-hard
-[d3-dev-exp]: https://javascript.plainenglish.io/how-the-developer-experience-for-d3-js-could-be-improved-31b372ab3119
-
 This document explains how D3 works by reimplementing its core features from scratch, so we can draw the same kinds of graphs using a similar interface[^build-your-own-x].
 
 [^build-your-own-x]: Some say that the best way to understand the internals of popular tools or packages is to reimplement them yourself. Articles that do this have become a whole genre, known as [build-your-own-x].
