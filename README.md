@@ -451,78 +451,9 @@ Interestingly, the actual [d3-fetch source code][d3-fetch-json] is almost the sa
 [d3-fetch-json]: https://github.com/d3/d3-fetch/blob/v3.0.1/src/json.js
 
 
-### Organizing as a Package
-As the codebase grows, it would be ideal to organize it as a package.
-However, for the sake of step-by-step explanation, this document keeps all implementations in a single JS file.
-
-**examples/setup-package/myd3.html:**
-```js
-<!doctype html>
-<meta charset="utf-8" />
-<body>
-  <div id="chart"></div>
-
-  <script src="./myd3.js"></script>
-  <script>
-    const svg = d3
-      .select("#chart")
-      .append("svg")
-      .attr("width", 500)
-      .attr("height", 500)
-      .append("g");
-
-    d3.json("./data.json").then((data) => {
-      for (const d of data) {
-        svg
-          .append("rect")
-          .attr("class", "bar")
-          .attr("x", d.x)
-          .attr("y", d.y)
-          .attr("width", d.width)
-          .attr("height", d.height);
-      }
-    });
-  </script>
-</body>
-```
-
-**examples/setup-package/myd3.js:**
-```js
-const d3 = {
-  select(selector) {
-    const el = document.querySelector(selector);
-    return new Selection(el);
-  },
-  async json(path) {
-    const response = await fetch(path);
-    return response.json();
-  },
-};
-
-class Selection {
-  element;
-  constructor(element) {
-    this.element = element;
-  }
-  append(name) {
-    const child = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      name,
-    );
-    this.element.append(child);
-    return new Selection(child);
-  }
-  text(content) {
-    const txt = document.createTextNode(content);
-    this.element.append(txt);
-    return this;
-  }
-  attr(key, value) {
-    this.element.setAttribute(key, value);
-    return this;
-  }
-}
-```
+> [!NOTE]
+> As the codebase grows, it would be ideal to organize it as a package.
+> However, for the sake of step-by-step explanation, this document keeps all implementations in a single JS file.
 
 
 ## Drawing Bar Charts
