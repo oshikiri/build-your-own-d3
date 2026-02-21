@@ -231,12 +231,7 @@ attr(key, value) {
 }
 ```
 
-
-However, even after adding the `attr` method, the rectangle still does not appear.
-
-![Rectangle does not appear](.readme/rect-did-not-appear.png)
-
-This is a common pitfall when working with SVG. For now, let's set aside the reason and simply change the code from the "Before" to the "After" version to resolve the error.
+and update `append` as follows
 
 ```js
 // Before
@@ -255,85 +250,23 @@ After making this change, the rectangle appears as expected, as shown in the fol
 
 ![Rectangle appears](.readme/rect-appeared.png)
 
-Why do we need to use `createElementNS` instead of `createElement`?
-What we want to create here is an `<svg>` element in the SVG namespace, but `document.createElement("svg")` creates an `svg` element in the HTML namespace.
-Therefore, to create an `<svg>` element in the SVG namespace, you need to explicitly specify the namespace as the first argument to `createElementNS`.
-
-> [!NOTE]
-> I realized that [the MDN documentation][mdn-createElement] for `Document.createElement` clearly states: "In an HTML document, the `document.createElement()` method creates the HTML element specified by `localName` ..."
-
-- [svg - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/svg)
-- [Namespaces crash course - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course)
-- [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
-
-In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
-From here on, this section only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
-
-[d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
-[mdn-createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-
-For reference, here is the complete source code.
-
-**demo/rectangle/myd3.html:**
-```html
-<!doctype html>
-<meta charset="utf-8" />
-<body>
-  <div id="chart"></div>
-
-  <script>
-    const d3 = {
-      select(selector) {
-        const el = document.querySelector(selector);
-        return new Selection(el);
-      },
-    };
-
-    class Selection {
-      element;
-      constructor(element) {
-        this.element = element;
-      }
-      append(name) {
-        const child = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          name,
-        );
-        this.element.append(child);
-        return new Selection(child);
-      }
-      text(content) {
-        const txt = document.createTextNode(content);
-        this.element.append(txt);
-        return this;
-      }
-      attr(key, value) {
-        this.element.setAttribute(key, value);
-        return this;
-      }
-    }
-  </script>
-
-  <script>
-    const svg = d3
-      .select("#chart")
-      .append("svg")
-      .attr("width", 500)
-      .attr("height", 500)
-      .append("g");
-    svg
-      .append("rect")
-      .attr("x", 200)
-      .attr("y", 200)
-      .attr("width", 50)
-      .attr("height", 20)
-      .attr("fill", "blue");
-  </script>
-</body>
-```
-
 - [code](https://github.com/oshikiri/build-your-own-d3/blob/main/demo/rectangle/myd3.html)
 - [demo](https://www.oshikiri.org/build-your-own-d3/demo/rectangle/myd3.html)
+
+
+> [!NOTE]
+> Why do we need to use `createElementNS` instead of `createElement`?
+> What we want to create here is an `<svg>` element in the SVG namespace, but `document.createElement("svg")` creates an `svg` element in the HTML namespace.
+> Therefore, to create an `<svg>` element in the SVG namespace, you need to explicitly specify the namespace as the first argument to `createElementNS`.
+>
+> - [svg - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/>docs/Web/SVG/Reference/Element/svg)
+> - [Namespaces crash course - SVG: Scalable Vector Graphics | MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course)
+> - [No `createElement` with SVG | webhint documentation](https://webhint.io/docs/user-guide/hints/hint-create-element-svg/)
+>
+> In the [actual implementation of append][d3-selection-append], D3 uses `http://www.w3.org/2000/svg` as the namespace for `append("svg")`, and for other cases, it inherits the parent's namespace.
+> From here on, this section only creates SVG elements, and for simplicity we always create new elements in the SVG namespace.
+
+[d3-selection-append]: https://d3js.org/d3-selection/modifying#selection_append
 
 
 ### Drawing a Path
