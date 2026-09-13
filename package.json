@@ -13,6 +13,6 @@
   "license": "ISC",
   "devDependencies": {
     "jsdom": "29.1.1",
-    "prettier": "3.8.3"
+    "prettier": "3.9.6"
   }
 }
